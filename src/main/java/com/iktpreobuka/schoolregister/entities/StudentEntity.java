@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.iktpreobuka.schoolregister.entities.composite_key.StudentParentCK;
 import com.iktpreobuka.schoolregister.enumeration.EUserGender;
 
 @Entity
@@ -20,10 +21,10 @@ public class StudentEntity extends UserEntity{
 	private String pictureURL;
 
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
-	private List<StudentParent> parents;
+	private List<StudentParentCK> parents;*/
 
 	
 	public EUserGender getGender() {
@@ -47,11 +48,11 @@ public class StudentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<StudentParent> getParents() {
+	public List<StudentParentCK> getParents() {
 		return parents;
 	}
 
-	public void setParents(List<StudentParent> parents) {
+	public void setParents(List<StudentParentCK> parents) {
 		this.parents = parents;
 	}
 
@@ -62,7 +63,7 @@ public class StudentEntity extends UserEntity{
 	}
 
 	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
-			List<AccountEntity> accounts, EUserGender gender, String pictureURL, List<StudentParent> parents) {
+			List<AccountEntity> accounts, EUserGender gender, String pictureURL, List<StudentParentCK> parents) {
 		super(id, version, name, surname, dateOfBirth, address, accounts);
 		this.gender = gender;
 		this.pictureURL = pictureURL;

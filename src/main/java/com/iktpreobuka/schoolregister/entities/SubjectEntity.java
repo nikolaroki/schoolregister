@@ -2,17 +2,13 @@ package com.iktpreobuka.schoolregister.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "subject")
@@ -29,10 +25,13 @@ public class SubjectEntity {
 	private String name;
 	private Integer classesPerWeek;
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	@OneToMany(mappedBy = "grade", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
-	private List<GradeSubject> grades;
+	private List<GradeSubject> grades;*/
+	
+	@ManyToMany(mappedBy = "subjects")
+	private List<GradeEntity> grades;
 	
 	//////////////////GetSet//////////////////	
 	

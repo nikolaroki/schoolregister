@@ -1,20 +1,15 @@
 package com.iktpreobuka.schoolregister.entities;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.iktpreobuka.schoolregister.entities.composite_key.StudentParentCK;
 @Entity
 @Table(name = "child_parent")
 public class StudentParent {
 	
-	@Id
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "child_parent_id")
 	private Integer id;
@@ -59,12 +54,24 @@ public class StudentParent {
 
 	public void setId(Integer id) {
 		this.id = id;
-}
+}*/
 
 	public StudentParent() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	@EmbeddedId
+	private StudentParentCK studentParentID;
+	
+	public StudentParentCK getStudentParentID() {
+		return studentParentID;
+	}
+	public void setStudentParentID(StudentParentCK studentParentID) {
+		this.studentParentID = studentParentID;
+	}
+	
+	
 	
 	
 
