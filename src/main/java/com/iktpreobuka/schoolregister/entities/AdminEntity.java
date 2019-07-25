@@ -33,6 +33,7 @@ public class AdminEntity extends UserEntity {
 		// TODO Auto-generated constructor stub
 	}
 
+	// GetSet
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -43,7 +44,7 @@ public class AdminEntity extends UserEntity {
 	
 
 
-	// GetSet
+
 	
 	
 
