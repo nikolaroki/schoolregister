@@ -2,29 +2,15 @@ package com.iktpreobuka.schoolregister.entities.composite_key;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.iktpreobuka.schoolregister.entities.ParentEntity;
-import com.iktpreobuka.schoolregister.entities.StudentEntity;
 
 @Embeddable
 public class StudentParentCK implements Serializable {
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "child")	
-	protected StudentEntity child;
 	
-	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent")	
-	protected ParentEntity parent;
 
 
-	public StudentParentCK(StudentEntity child, ParentEntity parent) {
+/*	public StudentParentCK(StudentEntity child, ParentEntity parent) {
 		super();
 		this.child = child;
 		this.parent = parent;
@@ -76,7 +62,7 @@ public class StudentParentCK implements Serializable {
 	}
 	
 	
-	
+	*/
 	
 	
 	

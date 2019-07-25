@@ -11,13 +11,14 @@ import javax.persistence.Table;
 public class AdminEntity extends UserEntity {
 
 	// Attributes
-	private String startDate;
+	private Date startDate;
+
+
 
 	// Constructors
 
-	public AdminEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
-			List<AccountEntity> accounts, String startDate) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+	public AdminEntity(Date startDate) {
+		super();
 		this.startDate = startDate;
 	}
 
@@ -26,20 +27,25 @@ public class AdminEntity extends UserEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AdminEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
+	public AdminEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
 			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+		super(id, version, name, surname, dateOfBirth, accounts);
 		// TODO Auto-generated constructor stub
 	}
 
-	// GetSet
-
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	
 
+
+	// GetSet
+	
+	
+
+	
 }

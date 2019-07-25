@@ -16,13 +16,8 @@ public class TeacherEntity extends UserEntity {
 	private String title;
 	private Double pay;
 	private String pictureURL;
-
-	
-	//Constructors
-	
-	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
-			List<AccountEntity> accounts, String title, Double pay, String pictureURL) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+	public TeacherEntity(String title, Double pay, String pictureURL) {
+		super();
 		this.title = title;
 		this.pay = pay;
 		this.pictureURL = pictureURL;
@@ -31,19 +26,14 @@ public class TeacherEntity extends UserEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
+	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
 			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+		super(id, version, name, surname, dateOfBirth, accounts);
 		// TODO Auto-generated constructor stub
 	}
-	
-	//GetSet
-	
-	
 	public String getTitle() {
 		return title;
 	}
-	
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -59,6 +49,12 @@ public class TeacherEntity extends UserEntity {
 	public void setPictureURL(String pictureURL) {
 		this.pictureURL = pictureURL;
 	}
+
+	
+	//Constructors
+	
+	
+	
 	
 	
 	

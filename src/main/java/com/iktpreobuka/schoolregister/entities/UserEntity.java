@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UserEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
@@ -36,8 +37,6 @@ public abstract class UserEntity {
 	private String surname;
 	@Column(name = "dob")
 	private Date dateOfBirth;
-	@Column(name = "address")
-	private String address;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
@@ -84,14 +83,6 @@ public abstract class UserEntity {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public List<AccountEntity> getAccounts() {
 		return accounts;
 	}
@@ -100,7 +91,12 @@ public abstract class UserEntity {
 		this.accounts = accounts;
 	}
 
-	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
+	public UserEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
 			List<AccountEntity> accounts) {
 		super();
 		this.id = id;
@@ -108,14 +104,9 @@ public abstract class UserEntity {
 		this.name = name;
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
-		this.address = address;
 		this.accounts = accounts;
 	}
 
-	public UserEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 	
 	

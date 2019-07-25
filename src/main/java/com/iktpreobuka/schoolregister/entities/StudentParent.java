@@ -1,27 +1,37 @@
 package com.iktpreobuka.schoolregister.entities;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 
-import com.iktpreobuka.schoolregister.entities.composite_key.StudentParentCK;
 @Entity
-@Table(name = "child_parent")
+@Table(name = "child_parent", uniqueConstraints = { @UniqueConstraint(columnNames = { "children", "parents" }) })
+
 public class StudentParent {
-	
-	/*@Id
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "child_parent_id")
+	@Column(name = "parent_child_id")
 	private Integer id;
 	
-	
+	@Version
+	private Integer version;
+
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "child")	
+	@JoinColumn(name = "children")
 	private StudentEntity child;
-	
-	
+
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent")	
+	@JoinColumn(name = "parents")
 	private ParentEntity parent;
 
 	public StudentEntity getChild() {
@@ -40,36 +50,17 @@ public class StudentParent {
 		this.parent = parent;
 	}
 
-	
-	public StudentParent(Integer id, StudentEntity child, ParentEntity parent) {
+	public StudentParent(StudentEntity child, ParentEntity parent) {
 		super();
-	//	this.id = id;
 		this.child = child;
 		this.parent = parent;
 	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-}*/
 
 	public StudentParent() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	@EmbeddedId
-	private StudentParentCK studentParentID;
-	
-	public StudentParentCK getStudentParentID() {
-		return studentParentID;
-	}
-	public void setStudentParentID(StudentParentCK studentParentID) {
-		this.studentParentID = studentParentID;
-	}
 	
 	
 	

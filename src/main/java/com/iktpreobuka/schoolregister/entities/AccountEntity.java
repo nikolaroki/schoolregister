@@ -25,6 +25,7 @@ public class AccountEntity {
 	@Version
 	private Integer version;
 	
+	@Column(name = "active")
 	private Boolean active;
 	
 	@Column(name = "username")
@@ -58,6 +59,14 @@ public class AccountEntity {
 		this.version = version;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -82,21 +91,16 @@ public class AccountEntity {
 		this.role = role;
 	}
 
-	public AccountEntity() {
-		super();
-		// TODO Auto-generated constructor stub
+	public UserEntity getUser() {
+		return user;
 	}
 
-	public Boolean getActive() {
-		return active;
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public AccountEntity(Integer id, Integer version, Boolean active, String username, String password,
-			RoleEntity role) {
+	public AccountEntity(Integer id, Integer version, Boolean active, String username, String password, RoleEntity role,
+			UserEntity user) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -104,9 +108,15 @@ public class AccountEntity {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+		this.user = user;
 	}
 
+	public AccountEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
+	
 	
 	
 	

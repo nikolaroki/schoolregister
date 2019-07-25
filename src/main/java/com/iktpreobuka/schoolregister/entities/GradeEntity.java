@@ -13,15 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iktpreobuka.schoolregister.enumeration.EGradeNumber;
 
 @Entity
 @Table(name = "grade")
+
 public class GradeEntity {
 	
 	@Id
@@ -47,10 +47,11 @@ public class GradeEntity {
 	
 	
 	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
+	@JoinTable(
     		name = "proba", 
             joinColumns = { @JoinColumn(name = "grade_id") }, 
-            inverseJoinColumns = { @JoinColumn(name = "subject_id") })
+            inverseJoinColumns = { @JoinColumn(name = "subject_id") },
+            uniqueConstraints = {@UniqueConstraint(columnNames={"grade_id", "subject_id"})})
 	private List<SubjectEntity> subjects;
 	
 	

@@ -6,11 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.iktpreobuka.schoolregister.entities.composite_key.StudentParentCK;
 import com.iktpreobuka.schoolregister.enumeration.EUserGender;
 
 @Entity
@@ -18,15 +19,21 @@ import com.iktpreobuka.schoolregister.enumeration.EUserGender;
 public class StudentEntity extends UserEntity{
 	
 	private EUserGender gender;
-	private String pictureURL;
+	
+	private String pictureUrl;
+	
+	private String jmbg;
 
 	
-	/*@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
-	private List<StudentParentCK> parents;*/
-
+	private List<StudentParent> parents;
 	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address")
+	private AddressEntity studentAddress;
+
 	public EUserGender getGender() {
 		return gender;
 	}
@@ -34,13 +41,37 @@ public class StudentEntity extends UserEntity{
 	public void setGender(EUserGender gender) {
 		this.gender = gender;
 	}
-	
-	public String getPictureURL() {
-		return pictureURL;
+
+	public String getPictureUrl() {
+		return pictureUrl;
 	}
 
-	public void setPictureURL(String pictureURL) {
-		this.pictureURL = pictureURL;
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	public String getJmbg() {
+		return jmbg;
+	}
+
+	public void setJmbg(String jmbg) {
+		this.jmbg = jmbg;
+	}
+
+	public List<StudentParent> getParents() {
+		return parents;
+	}
+
+	public void setParents(List<StudentParent> parents) {
+		this.parents = parents;
+	}
+
+	public AddressEntity getAddress() {
+		return studentAddress;
+	}
+
+	public void setAddress(AddressEntity address) {
+		this.studentAddress = address;
 	}
 
 	public StudentEntity() {
@@ -48,29 +79,29 @@ public class StudentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<StudentParentCK> getParents() {
-		return parents;
-	}
-
-	public void setParents(List<StudentParentCK> parents) {
-		this.parents = parents;
-	}
-
-	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
+	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
 			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+		super(id, version, name, surname, dateOfBirth, accounts);
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String address,
-			List<AccountEntity> accounts, EUserGender gender, String pictureURL, List<StudentParentCK> parents) {
-		super(id, version, name, surname, dateOfBirth, address, accounts);
+	public StudentEntity(EUserGender gender, String pictureUrl, String jmbg, List<StudentParent> parents,
+			AddressEntity address) {
+		super();
 		this.gender = gender;
-		this.pictureURL = pictureURL;
+		this.pictureUrl = pictureUrl;
+		this.jmbg = jmbg;
 		this.parents = parents;
+		this.studentAddress = address;
 	}
+	
+	
+	
+	
 
-
+	
+	
+	
 
 
 	
