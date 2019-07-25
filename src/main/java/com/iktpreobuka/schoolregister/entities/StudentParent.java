@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.persistence.Version;
 
 @Entity
 @Table(name = "child_parent", uniqueConstraints = { @UniqueConstraint(columnNames = { "children", "parents" }) })
@@ -23,8 +22,6 @@ public class StudentParent {
 	@Column(name = "parent_child_id")
 	private Integer id;
 	
-	@Version
-	private Integer version;
 
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "children")

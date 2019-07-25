@@ -40,6 +40,11 @@ public class AddressEntity {
 	@OneToMany(mappedBy = "parentAddress", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<ParentEntity> parents;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "schoolAddress", fetch = FetchType.LAZY,
+	cascade = { CascadeType.REFRESH })
+	private List<SchoolEntity> schools;
 
 	public Integer getId() {
 		return id;
@@ -81,24 +86,32 @@ public class AddressEntity {
 		this.city = city;
 	}
 
-	public List<StudentEntity> getStudent() {
+	public List<StudentEntity> getStudents() {
 		return students;
 	}
 
-	public void setStudent(List<StudentEntity> student) {
-		this.students = student;
+	public void setStudents(List<StudentEntity> students) {
+		this.students = students;
 	}
 
-	public List<ParentEntity> getParent() {
+	public List<ParentEntity> getParents() {
 		return parents;
 	}
 
-	public void setParent(List<ParentEntity> parent) {
-		this.parents = parent;
+	public void setParents(List<ParentEntity> parents) {
+		this.parents = parents;
+	}
+
+	public List<SchoolEntity> getSchools() {
+		return schools;
+	}
+
+	public void setSchools(List<SchoolEntity> schools) {
+		this.schools = schools;
 	}
 
 	public AddressEntity(Integer id, Integer version, String streetNumber, String street, String city,
-			List<StudentEntity> students, List<ParentEntity> parents) {
+			List<StudentEntity> students, List<ParentEntity> parents, List<SchoolEntity> schools) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -107,12 +120,15 @@ public class AddressEntity {
 		this.city = city;
 		this.students = students;
 		this.parents = parents;
+		this.schools = schools;
 	}
 
 	public AddressEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
 	
 	
 	

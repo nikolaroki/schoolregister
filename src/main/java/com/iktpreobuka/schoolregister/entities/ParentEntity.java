@@ -21,19 +21,7 @@ public class ParentEntity extends UserEntity{
 	private EUserGender gender;
 	
 	private String email;
-	
-	
-
-	public EUserGender getGender() {
-		return gender;
-	}
-
-	public void setGender(EUserGender gender) {
-		this.gender = gender;
-	}
-
-	
-
+	private String phone;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "child", fetch = FetchType.LAZY,
@@ -44,12 +32,28 @@ public class ParentEntity extends UserEntity{
 	@JoinColumn(name = "address")
 	private AddressEntity parentAddress;
 
+	public EUserGender getGender() {
+		return gender;
+	}
+
+	public void setGender(EUserGender gender) {
+		this.gender = gender;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public List<StudentParent> getChildren() {
@@ -60,20 +64,22 @@ public class ParentEntity extends UserEntity{
 		this.children = children;
 	}
 
-	public AddressEntity getAddress() {
+	public AddressEntity getParentAddress() {
 		return parentAddress;
 	}
 
-	public void setAddress(AddressEntity address) {
-		this.parentAddress = address;
+	public void setParentAddress(AddressEntity parentAddress) {
+		this.parentAddress = parentAddress;
 	}
 
-	public ParentEntity(EUserGender gender, String email, List<StudentParent> children, AddressEntity address) {
+	public ParentEntity(EUserGender gender, String email, String phone, List<StudentParent> children,
+			AddressEntity parentAddress) {
 		super();
 		this.gender = gender;
 		this.email = email;
+		this.phone = phone;
 		this.children = children;
-		this.parentAddress = address;
+		this.parentAddress = parentAddress;
 	}
 
 	public ParentEntity() {
@@ -86,6 +92,9 @@ public class ParentEntity extends UserEntity{
 		super(id, version, name, surname, dateOfBirth, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+	
+	
 	
 	
 	

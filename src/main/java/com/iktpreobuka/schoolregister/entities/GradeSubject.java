@@ -21,9 +21,7 @@ public class GradeSubject {
 	private Integer id;
 	
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "grade")	
-	private GradeEntity grade;
+
 	
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
