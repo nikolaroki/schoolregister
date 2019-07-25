@@ -1,6 +1,5 @@
 package com.iktpreobuka.schoolregister.entities;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
-import com.iktpreobuka.schoolregister.enumeration.EGradeNumber;
-
 @Entity
 @Table(name = "grade")
 
@@ -32,8 +29,7 @@ public class GradeEntity {
 	private Integer version;
 	
 	
-	private Date schoolYear;
-	private EGradeNumber gradeNumber;
+
 	
 	
 	/*@JsonIgnore
