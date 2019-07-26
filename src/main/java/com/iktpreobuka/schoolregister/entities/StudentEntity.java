@@ -27,6 +27,11 @@ public class StudentEntity extends UserEntity{
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "schoolGroup")
 	private GroupEntity schoolGroup;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY,
+	cascade = { CascadeType.REFRESH })
+	private List<RegisterEntity> registers;
 
 	
 	@JsonIgnore

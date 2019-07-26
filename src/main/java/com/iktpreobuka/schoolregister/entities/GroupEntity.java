@@ -32,6 +32,8 @@ public class GroupEntity {
 	@Version
 	private Integer version;
 	
+	private Year generationYear;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "schoolGroup", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
@@ -53,22 +55,6 @@ public class GroupEntity {
 	@OneToMany(mappedBy = "schoolGroup", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<StudentEntity> students;
-	
-	private Year generationYear;
-	
-	
-
-	public GroupEntity(Integer id, Integer version, GradeEntity groupGrade, SchoolEntity groupSchool,
-			TeacherEntity homeRoomTeacher, List<StudentEntity> students, Year generationYear) {
-		super();
-		this.id = id;
-		this.version = version;
-		this.groupGrade = groupGrade;
-		this.groupSchool = groupSchool;
-		this.homeRoomTeacher = homeRoomTeacher;
-		this.students = students;
-		this.generationYear = generationYear;
-	}
 
 	public Integer getId() {
 		return id;
@@ -84,6 +70,22 @@ public class GroupEntity {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	public Year getGenerationYear() {
+		return generationYear;
+	}
+
+	public void setGenerationYear(Year generationYear) {
+		this.generationYear = generationYear;
+	}
+
+	public List<TeacherSubjectGroup> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<TeacherSubjectGroup> schedules) {
+		this.schedules = schedules;
 	}
 
 	public GradeEntity getGroupGrade() {
@@ -110,8 +112,6 @@ public class GroupEntity {
 		this.homeRoomTeacher = homeRoomTeacher;
 	}
 
-	
-
 	public List<StudentEntity> getStudents() {
 		return students;
 	}
@@ -120,12 +120,18 @@ public class GroupEntity {
 		this.students = students;
 	}
 
-	public Year getGenerationYear() {
-		return generationYear;
-	}
-
-	public void setGenerationYear(Year generationYear) {
+	public GroupEntity(Integer id, Integer version, Year generationYear, List<TeacherSubjectGroup> schedules,
+			GradeEntity groupGrade, SchoolEntity groupSchool, TeacherEntity homeRoomTeacher,
+			List<StudentEntity> students) {
+		super();
+		this.id = id;
+		this.version = version;
 		this.generationYear = generationYear;
+		this.schedules = schedules;
+		this.groupGrade = groupGrade;
+		this.groupSchool = groupSchool;
+		this.homeRoomTeacher = homeRoomTeacher;
+		this.students = students;
 	}
 
 	public GroupEntity() {
@@ -136,7 +142,4 @@ public class GroupEntity {
 	
 	
 	
-	
-	
-
 }

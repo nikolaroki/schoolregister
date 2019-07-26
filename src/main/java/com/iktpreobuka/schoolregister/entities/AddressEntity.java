@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class AddressEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "address_id")
 	private Integer id;
 	
@@ -129,11 +129,4 @@ public class AddressEntity {
 	}
 
 	
-	
-	
-	
-	
-	
-
-
 }

@@ -17,8 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "account")
 public class AccountEntity {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
 	private Integer id;
 	
@@ -116,6 +117,7 @@ public class AccountEntity {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	
 	
 	

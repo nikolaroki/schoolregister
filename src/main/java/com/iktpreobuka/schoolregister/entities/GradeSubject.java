@@ -19,7 +19,7 @@ uniqueConstraints = { @UniqueConstraint(columnNames = { "subjects", "grades" }) 
 public class GradeSubject {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "grade_subject_id")
 	private Integer id;
 	
@@ -66,6 +66,8 @@ public class GradeSubject {
 		this.subject = subject;
 		this.grade = grade;
 	}
+
+	
 	
 	
 
