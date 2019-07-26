@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,9 +24,18 @@ public class TeacherEntity extends UserEntity {
 	private String pictureURL;
 	
 	@JsonIgnore
+	@OneToOne(mappedBy = "homeRoomTeacher")
+	private GroupEntity homeGroup;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "school", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<TeacherSchool> schools;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY,
+	cascade = { CascadeType.REFRESH })
+	private List<TeacherSubjectGroup> schedules;
 
 	public String getTitle() {
 		return title;

@@ -38,6 +38,11 @@ public class SchoolEntity {
 	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<TeacherSchool> teachers;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "groupSchool", fetch = FetchType.LAZY,
+	cascade = { CascadeType.REFRESH })
+	private List<GroupEntity> groups;
 
 	public List<TeacherSchool> getTeachers() {
 		return teachers;

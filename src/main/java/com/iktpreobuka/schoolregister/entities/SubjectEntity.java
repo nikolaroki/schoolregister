@@ -33,6 +33,11 @@ public class SubjectEntity {
 	@OneToMany(mappedBy = "grade", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<GradeSubject> grades;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "subject", fetch = FetchType.LAZY,
+	cascade = { CascadeType.REFRESH })
+	private List<TeacherSubjectGroup> schedules;
 
 	public Integer getId() {
 		return id;

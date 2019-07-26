@@ -23,6 +23,10 @@ public class StudentEntity extends UserEntity{
 	private String pictureUrl;
 	
 	private String jmbg;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "schoolGroup")
+	private GroupEntity schoolGroup;
 
 	
 	@JsonIgnore
