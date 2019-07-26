@@ -18,7 +18,7 @@ import javax.persistence.UniqueConstraint;
 public class StudentParent {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "parent_child_id")
 	private Integer id;
 	
@@ -30,6 +30,14 @@ public class StudentParent {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "parents")
 	private ParentEntity parent;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public StudentEntity getChild() {
 		return child;
@@ -47,8 +55,9 @@ public class StudentParent {
 		this.parent = parent;
 	}
 
-	public StudentParent(StudentEntity child, ParentEntity parent) {
+	public StudentParent(Integer id, StudentEntity child, ParentEntity parent) {
 		super();
+		this.id = id;
 		this.child = child;
 		this.parent = parent;
 	}
@@ -57,6 +66,7 @@ public class StudentParent {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	
 	
 	

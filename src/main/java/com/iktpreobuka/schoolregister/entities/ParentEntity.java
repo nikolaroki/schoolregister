@@ -72,9 +72,10 @@ public class ParentEntity extends UserEntity{
 		this.parentAddress = parentAddress;
 	}
 
-	public ParentEntity(EUserGender gender, String email, String phone, List<StudentParent> children,
+	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+			List<AccountEntity> accounts, EUserGender gender, String email, String phone, List<StudentParent> children,
 			AddressEntity parentAddress) {
-		super();
+		super(id, version, name, surname, dateOfBirth, accounts);
 		this.gender = gender;
 		this.email = email;
 		this.phone = phone;
@@ -93,6 +94,7 @@ public class ParentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	
 	
 	

@@ -61,6 +61,14 @@ public class TeacherEntity extends UserEntity {
 		this.pictureURL = pictureURL;
 	}
 
+	public GroupEntity getHomeGroup() {
+		return homeGroup;
+	}
+
+	public void setHomeGroup(GroupEntity homeGroup) {
+		this.homeGroup = homeGroup;
+	}
+
 	public List<TeacherSchool> getSchools() {
 		return schools;
 	}
@@ -69,12 +77,24 @@ public class TeacherEntity extends UserEntity {
 		this.schools = schools;
 	}
 
-	public TeacherEntity(String title, Double pay, String pictureURL, List<TeacherSchool> schools) {
-		super();
+	public List<TeacherSubjectGroup> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<TeacherSubjectGroup> schedules) {
+		this.schedules = schedules;
+	}
+
+	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+			List<AccountEntity> accounts, String title, Double pay, String pictureURL, GroupEntity homeGroup,
+			List<TeacherSchool> schools, List<TeacherSubjectGroup> schedules) {
+		super(id, version, name, surname, dateOfBirth, accounts);
 		this.title = title;
 		this.pay = pay;
 		this.pictureURL = pictureURL;
+		this.homeGroup = homeGroup;
 		this.schools = schools;
+		this.schedules = schedules;
 	}
 
 	public TeacherEntity() {
@@ -87,6 +107,8 @@ public class TeacherEntity extends UserEntity {
 		super(id, version, name, surname, dateOfBirth, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 	
 	
 	

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class UserEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Integer id;
 	
@@ -91,11 +91,6 @@ public abstract class UserEntity {
 		this.accounts = accounts;
 	}
 
-	public UserEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
 			List<AccountEntity> accounts) {
 		super();
@@ -107,6 +102,12 @@ public abstract class UserEntity {
 		this.accounts = accounts;
 	}
 
+	public UserEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	
 	
 	
 	

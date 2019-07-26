@@ -20,7 +20,7 @@ public class SubjectEntity {
 
 	//////////////////Attributes//////////////////	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Version
@@ -79,19 +79,31 @@ public class SubjectEntity {
 		this.grades = grades;
 	}
 
-	public SubjectEntity(Integer id, Integer version, String name, Integer classesPerWeek, List<GradeSubject> grades) {
+	public List<TeacherSubjectGroup> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<TeacherSubjectGroup> schedules) {
+		this.schedules = schedules;
+	}
+
+	public SubjectEntity(Integer id, Integer version, String name, Integer classesPerWeek, List<GradeSubject> grades,
+			List<TeacherSubjectGroup> schedules) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.name = name;
 		this.classesPerWeek = classesPerWeek;
 		this.grades = grades;
+		this.schedules = schedules;
 	}
 
 	public SubjectEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
 	
 	
 	

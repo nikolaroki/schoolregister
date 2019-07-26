@@ -25,7 +25,7 @@ uniqueConstraints = { @UniqueConstraint(
 public class TeacherSubjectGroup {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "schedule_id")
 	private Integer id;
 	
@@ -45,19 +45,6 @@ public class TeacherSubjectGroup {
 	@OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<RegisterEntity> registers;
-
-	public TeacherSubjectGroup() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public TeacherSubjectGroup(Integer id, TeacherEntity teacher, SubjectEntity subject, GroupEntity schoolGroup) {
-		super();
-		this.id = id;
-		this.teacher = teacher;
-		this.subject = subject;
-		this.schoolGroup = schoolGroup;
-	}
 
 	public Integer getId() {
 		return id;
@@ -90,8 +77,30 @@ public class TeacherSubjectGroup {
 	public void setSchoolGroup(GroupEntity schoolGroup) {
 		this.schoolGroup = schoolGroup;
 	}
-	
-	
+
+	public List<RegisterEntity> getRegisters() {
+		return registers;
+	}
+
+	public void setRegisters(List<RegisterEntity> registers) {
+		this.registers = registers;
+	}
+
+	public TeacherSubjectGroup(Integer id, TeacherEntity teacher, SubjectEntity subject, GroupEntity schoolGroup,
+			List<RegisterEntity> registers) {
+		super();
+		this.id = id;
+		this.teacher = teacher;
+		this.subject = subject;
+		this.schoolGroup = schoolGroup;
+		this.registers = registers;
+	}
+
+	public TeacherSubjectGroup() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	
 
 }

@@ -67,6 +67,22 @@ public class StudentEntity extends UserEntity{
 		this.jmbg = jmbg;
 	}
 
+	public GroupEntity getSchoolGroup() {
+		return schoolGroup;
+	}
+
+	public void setSchoolGroup(GroupEntity schoolGroup) {
+		this.schoolGroup = schoolGroup;
+	}
+
+	public List<RegisterEntity> getRegisters() {
+		return registers;
+	}
+
+	public void setRegisters(List<RegisterEntity> registers) {
+		this.registers = registers;
+	}
+
 	public List<StudentParent> getParents() {
 		return parents;
 	}
@@ -75,12 +91,25 @@ public class StudentEntity extends UserEntity{
 		this.parents = parents;
 	}
 
-	public AddressEntity getAddress() {
+	public AddressEntity getStudentAddress() {
 		return studentAddress;
 	}
 
-	public void setAddress(AddressEntity address) {
-		this.studentAddress = address;
+	public void setStudentAddress(AddressEntity studentAddress) {
+		this.studentAddress = studentAddress;
+	}
+
+	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+			List<AccountEntity> accounts, EUserGender gender, String pictureUrl, String jmbg, GroupEntity schoolGroup,
+			List<RegisterEntity> registers, List<StudentParent> parents, AddressEntity studentAddress) {
+		super(id, version, name, surname, dateOfBirth, accounts);
+		this.gender = gender;
+		this.pictureUrl = pictureUrl;
+		this.jmbg = jmbg;
+		this.schoolGroup = schoolGroup;
+		this.registers = registers;
+		this.parents = parents;
+		this.studentAddress = studentAddress;
 	}
 
 	public StudentEntity() {
@@ -94,15 +123,6 @@ public class StudentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudentEntity(EUserGender gender, String pictureUrl, String jmbg, List<StudentParent> parents,
-			AddressEntity address) {
-		super();
-		this.gender = gender;
-		this.pictureUrl = pictureUrl;
-		this.jmbg = jmbg;
-		this.parents = parents;
-		this.studentAddress = address;
-	}
 	
 	
 	

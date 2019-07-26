@@ -20,7 +20,7 @@ import com.iktpreobuka.schoolregister.enumeration.ESemester;
 public class RegisterEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "register_id")
 	private Integer id;
 	
@@ -102,6 +102,8 @@ public class RegisterEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
 	
 	
 	

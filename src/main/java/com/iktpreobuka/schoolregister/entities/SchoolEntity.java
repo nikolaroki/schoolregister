@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class SchoolEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Version
@@ -43,14 +43,6 @@ public class SchoolEntity {
 	@OneToMany(mappedBy = "groupSchool", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<GroupEntity> groups;
-
-	public List<TeacherSchool> getTeachers() {
-		return teachers;
-	}
-
-	public void setTeachers(List<TeacherSchool> teachers) {
-		this.teachers = teachers;
-	}
 
 	public Integer getId() {
 		return id;
@@ -84,25 +76,37 @@ public class SchoolEntity {
 		this.schoolAddress = schoolAddress;
 	}
 
-	public SchoolEntity() {
-		super();
-		// TODO Auto-generated constructor stub
+	public List<TeacherSchool> getTeachers() {
+		return teachers;
+	}
+
+	public void setTeachers(List<TeacherSchool> teachers) {
+		this.teachers = teachers;
+	}
+
+	public List<GroupEntity> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<GroupEntity> groups) {
+		this.groups = groups;
 	}
 
 	public SchoolEntity(Integer id, Integer version, String schoolName, AddressEntity schoolAddress,
-			List<TeacherSchool> teachers) {
+			List<TeacherSchool> teachers, List<GroupEntity> groups) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.schoolName = schoolName;
 		this.schoolAddress = schoolAddress;
 		this.teachers = teachers;
+		this.groups = groups;
 	}
 
-
-	
-	
-	
+	public SchoolEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	
 	
