@@ -99,10 +99,10 @@ public class StudentEntity extends UserEntity{
 		this.studentAddress = studentAddress;
 	}
 
-	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
 			List<AccountEntity> accounts, EUserGender gender, String pictureUrl, String jmbg, GroupEntity schoolGroup,
 			List<RegisterEntity> registers, List<StudentParent> parents, AddressEntity studentAddress) {
-		super(id, version, name, surname, dateOfBirth, accounts);
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		this.gender = gender;
 		this.pictureUrl = pictureUrl;
 		this.jmbg = jmbg;
@@ -117,11 +117,13 @@ public class StudentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
 			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, accounts);
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	
 	

@@ -37,6 +37,8 @@ public abstract class UserEntity {
 	private String surname;
 	@Column(name = "dob")
 	private Date dateOfBirth;
+	@Column(name = "email")
+	private String email;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
@@ -83,6 +85,14 @@ public abstract class UserEntity {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public List<AccountEntity> getAccounts() {
 		return accounts;
 	}
@@ -91,7 +101,7 @@ public abstract class UserEntity {
 		this.accounts = accounts;
 	}
 
-	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
 			List<AccountEntity> accounts) {
 		super();
 		this.id = id;
@@ -99,6 +109,7 @@ public abstract class UserEntity {
 		this.name = name;
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
+		this.email = email;
 		this.accounts = accounts;
 	}
 
@@ -107,6 +118,7 @@ public abstract class UserEntity {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	
 	
 	

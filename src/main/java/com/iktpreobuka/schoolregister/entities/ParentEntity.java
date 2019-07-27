@@ -20,7 +20,7 @@ public class ParentEntity extends UserEntity{
 	
 	private EUserGender gender;
 	
-	private String email;
+	
 	private String phone;
 	
 	@JsonIgnore
@@ -40,13 +40,7 @@ public class ParentEntity extends UserEntity{
 		this.gender = gender;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	
 
 	public String getPhone() {
 		return phone;
@@ -72,12 +66,11 @@ public class ParentEntity extends UserEntity{
 		this.parentAddress = parentAddress;
 	}
 
-	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
-			List<AccountEntity> accounts, EUserGender gender, String email, String phone, List<StudentParent> children,
+	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
+			List<AccountEntity> accounts, EUserGender gender, String phone, List<StudentParent> children,
 			AddressEntity parentAddress) {
-		super(id, version, name, surname, dateOfBirth, accounts);
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		this.gender = gender;
-		this.email = email;
 		this.phone = phone;
 		this.children = children;
 		this.parentAddress = parentAddress;
@@ -88,9 +81,9 @@ public class ParentEntity extends UserEntity{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
 			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, accounts);
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		// TODO Auto-generated constructor stub
 	}
 

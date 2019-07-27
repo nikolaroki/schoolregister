@@ -13,7 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.iktpreobuka.schoolregister.enumeration.EMarkDefinition;
+import com.iktpreobuka.schoolregister.enumeration.EMarkValue;
 import com.iktpreobuka.schoolregister.enumeration.ESemester;
+
+
 
 @Entity
 @Table(name = "register")
@@ -24,8 +28,12 @@ public class RegisterEntity {
 	@Column(name = "register_id")
 	private Integer id;
 	
-	private Date registerEntry;
+	private Date registerEntryDate;
 	private ESemester semester;
+	
+	private EMarkValue markValue;
+	
+	private EMarkDefinition markDefinition;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "schedule")
@@ -34,10 +42,6 @@ public class RegisterEntity {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "student")
 	private StudentEntity student;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "mark")
-	private MarkEntity mark;
 
 	public Integer getId() {
 		return id;
@@ -47,12 +51,12 @@ public class RegisterEntity {
 		this.id = id;
 	}
 
-	public Date getRegisterEntry() {
-		return registerEntry;
+	public Date getRegisterEntryDate() {
+		return registerEntryDate;
 	}
 
-	public void setRegisterEntry(Date registerEntry) {
-		this.registerEntry = registerEntry;
+	public void setRegisterEntryDate(Date registerEntryDate) {
+		this.registerEntryDate = registerEntryDate;
 	}
 
 	public ESemester getSemester() {
@@ -61,6 +65,22 @@ public class RegisterEntity {
 
 	public void setSemester(ESemester semester) {
 		this.semester = semester;
+	}
+
+	public EMarkValue getMarkValue() {
+		return markValue;
+	}
+
+	public void setMarkValue(EMarkValue markValue) {
+		this.markValue = markValue;
+	}
+
+	public EMarkDefinition getMarkDefinition() {
+		return markDefinition;
+	}
+
+	public void setMarkDefinition(EMarkDefinition markDefinition) {
+		this.markDefinition = markDefinition;
 	}
 
 	public TeacherSubjectGroup getSchedule() {
@@ -79,29 +99,26 @@ public class RegisterEntity {
 		this.student = student;
 	}
 
-	public MarkEntity getMark() {
-		return mark;
-	}
-
-	public void setMark(MarkEntity mark) {
-		this.mark = mark;
-	}
-
-	public RegisterEntity(Integer id, Date registerEntry, ESemester semester, TeacherSubjectGroup schedule,
-			StudentEntity student, MarkEntity mark) {
+	public RegisterEntity(Integer id, Date registerEntryDate, ESemester semester, EMarkValue markValue,
+			EMarkDefinition markDefinition, TeacherSubjectGroup schedule, StudentEntity student) {
 		super();
 		this.id = id;
-		this.registerEntry = registerEntry;
+		this.registerEntryDate = registerEntryDate;
 		this.semester = semester;
+		this.markValue = markValue;
+		this.markDefinition = markDefinition;
 		this.schedule = schedule;
 		this.student = student;
-		this.mark = mark;
 	}
 
 	public RegisterEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+
+
+	
 
 	
 	

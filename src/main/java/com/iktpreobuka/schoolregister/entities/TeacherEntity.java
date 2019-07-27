@@ -85,10 +85,17 @@ public class TeacherEntity extends UserEntity {
 		this.schedules = schedules;
 	}
 
-	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
+
+
+	public TeacherEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
 			List<AccountEntity> accounts, String title, Double pay, String pictureURL, GroupEntity homeGroup,
 			List<TeacherSchool> schools, List<TeacherSubjectGroup> schedules) {
-		super(id, version, name, surname, dateOfBirth, accounts);
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		this.title = title;
 		this.pay = pay;
 		this.pictureURL = pictureURL;
@@ -97,16 +104,13 @@ public class TeacherEntity extends UserEntity {
 		this.schedules = schedules;
 	}
 
-	public TeacherEntity() {
-		super();
+	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
+			List<AccountEntity> accounts) {
+		super(id, version, name, surname, dateOfBirth, email, accounts);
 		// TODO Auto-generated constructor stub
 	}
 
-	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth,
-			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, accounts);
-		// TODO Auto-generated constructor stub
-	}
+
 
 	
 	
