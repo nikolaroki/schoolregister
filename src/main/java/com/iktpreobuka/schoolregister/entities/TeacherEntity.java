@@ -28,11 +28,6 @@ public class TeacherEntity extends UserEntity {
 	private GroupEntity homeGroup;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "school", fetch = FetchType.LAZY,
-	cascade = { CascadeType.REFRESH })
-	private List<TeacherSchool> schools;
-	
-	@JsonIgnore
 	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<TeacherSubjectGroup> schedules;
@@ -69,13 +64,6 @@ public class TeacherEntity extends UserEntity {
 		this.homeGroup = homeGroup;
 	}
 
-	public List<TeacherSchool> getSchools() {
-		return schools;
-	}
-
-	public void setSchools(List<TeacherSchool> schools) {
-		this.schools = schools;
-	}
 
 	public List<TeacherSubjectGroup> getSchedules() {
 		return schedules;
@@ -93,22 +81,23 @@ public class TeacherEntity extends UserEntity {
 	}
 
 	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts, String title, Double pay, String pictureURL, GroupEntity homeGroup,
-			List<TeacherSchool> schools, List<TeacherSubjectGroup> schedules) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts, String title, Double pay, String pictureURL,
+			GroupEntity homeGroup,  List<TeacherSubjectGroup> schedules) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		this.title = title;
 		this.pay = pay;
 		this.pictureURL = pictureURL;
 		this.homeGroup = homeGroup;
-		this.schools = schools;
 		this.schedules = schedules;
 	}
 
 	public TeacherEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+
 
 
 

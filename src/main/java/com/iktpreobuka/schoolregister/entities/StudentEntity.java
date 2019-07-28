@@ -100,12 +100,13 @@ public class StudentEntity extends UserEntity{
 	}
 
 	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts, EUserGender gender, String pictureUrl, String jmbg, GroupEntity schoolGroup,
-			List<RegisterEntity> registers, List<StudentParent> parents, AddressEntity studentAddress) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts, EUserGender gender, String pictureUrl, String jmbg2,
+			GroupEntity schoolGroup, List<RegisterEntity> registers, List<StudentParent> parents,
+			AddressEntity studentAddress) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		this.gender = gender;
 		this.pictureUrl = pictureUrl;
-		this.jmbg = jmbg;
+		jmbg = jmbg2;
 		this.schoolGroup = schoolGroup;
 		this.registers = registers;
 		this.parents = parents;
@@ -118,10 +119,12 @@ public class StudentEntity extends UserEntity{
 	}
 
 	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	
 

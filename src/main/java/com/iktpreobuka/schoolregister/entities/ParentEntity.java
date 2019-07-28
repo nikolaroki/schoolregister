@@ -67,9 +67,9 @@ public class ParentEntity extends UserEntity{
 	}
 
 	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts, EUserGender gender, String phone, List<StudentParent> children,
+			String jmbg, List<AccountEntity> accounts, EUserGender gender, String phone, List<StudentParent> children,
 			AddressEntity parentAddress) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		this.gender = gender;
 		this.phone = phone;
 		this.children = children;
@@ -82,10 +82,12 @@ public class ParentEntity extends UserEntity{
 	}
 
 	public ParentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
+	
 
 	
 	

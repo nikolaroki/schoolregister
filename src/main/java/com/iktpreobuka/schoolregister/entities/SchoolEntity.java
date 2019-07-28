@@ -35,11 +35,6 @@ public class SchoolEntity {
 	private AddressEntity schoolAddress;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY,
-	cascade = { CascadeType.REFRESH })
-	private List<TeacherSchool> teachers;
-	
-	@JsonIgnore
 	@OneToMany(mappedBy = "groupSchool", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<GroupEntity> groups;
@@ -76,13 +71,6 @@ public class SchoolEntity {
 		this.schoolAddress = schoolAddress;
 	}
 
-	public List<TeacherSchool> getTeachers() {
-		return teachers;
-	}
-
-	public void setTeachers(List<TeacherSchool> teachers) {
-		this.teachers = teachers;
-	}
 
 	public List<GroupEntity> getGroups() {
 		return groups;
@@ -93,13 +81,12 @@ public class SchoolEntity {
 	}
 
 	public SchoolEntity(Integer id, Integer version, String schoolName, AddressEntity schoolAddress,
-			List<TeacherSchool> teachers, List<GroupEntity> groups) {
+			 List<GroupEntity> groups) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.schoolName = schoolName;
 		this.schoolAddress = schoolAddress;
-		this.teachers = teachers;
 		this.groups = groups;
 	}
 

@@ -25,8 +25,8 @@ public class AdminEntity extends UserEntity {
 	}
 
 	public AdminEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts, Date startDate) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts, Date startDate) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		this.startDate = startDate;
 	}
 
@@ -36,10 +36,11 @@ public class AdminEntity extends UserEntity {
 	}
 
 	public AdminEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts) {
-		super(id, version, name, surname, dateOfBirth, email, accounts);
+			String jmbg, List<AccountEntity> accounts) {
+		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		// TODO Auto-generated constructor stub
 	}
+
 	
 
 

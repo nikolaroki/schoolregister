@@ -40,6 +40,9 @@ public abstract class UserEntity {
 	@Column(name = "email")
 	private String email;
 	
+	@Column(name = "jmbg")
+	private String jmbg;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
@@ -93,6 +96,14 @@ public abstract class UserEntity {
 		this.email = email;
 	}
 
+	public String getJmbg() {
+		return jmbg;
+	}
+
+	public void setJmbg(String jmbg) {
+		this.jmbg = jmbg;
+	}
+
 	public List<AccountEntity> getAccounts() {
 		return accounts;
 	}
@@ -101,8 +112,10 @@ public abstract class UserEntity {
 		this.accounts = accounts;
 	}
 
+	
+
 	public UserEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			List<AccountEntity> accounts) {
+			String jmbg, List<AccountEntity> accounts) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -110,6 +123,7 @@ public abstract class UserEntity {
 		this.surname = surname;
 		this.dateOfBirth = dateOfBirth;
 		this.email = email;
+		this.jmbg = jmbg;
 		this.accounts = accounts;
 	}
 
