@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "user",uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "jmbg" }) })
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public abstract class UserEntity {
+public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "admin")
+@PrimaryKeyJoinColumn(name = "admin_id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AdminEntity extends UserEntity {
 

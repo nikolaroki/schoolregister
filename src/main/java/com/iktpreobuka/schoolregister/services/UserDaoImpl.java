@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
+import com.iktpreobuka.schoolregister.entities.UserEntity;
 
 @Service
 public class UserDaoImpl implements UserDao {
@@ -31,40 +32,15 @@ public class UserDaoImpl implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AdminEntity> doesUserExists(String userJmbg) {
+	public List<UserEntity> findExistingUsers(String userJmbg) {
 
-		String sql = "select u.id from UserEntity u where u.jmbg = '" + userJmbg + "'";
+		String sql = "select u from UserEntity u where u.jmbg = '" + userJmbg + "'";
 
 		Query query = em.createQuery(sql);
 
-		List<AdminEntity> result = query.getResultList();
-
-		return result;
+		return  query.getResultList();
 
 	}
 
-	@Override
-	public AdminEntity addUserToAdmin(String userJmbg) {
-
-		/*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		String todayDate = format.format(new Date());*/
-		
-		String sql = "insert into AdminEntity(id) select u.id from "
-				+ "UserEntity u where u.jmbg = :jb";
-		Query query = em.createQuery(sql);
-		query.setParameter("jb", userJmbg);
-
-		int res = query.executeUpdate();
-		System.out.println(res);
-		
-		String sql1 = "select a from AdminEntity a " + "where a.id = (select u.id from UserEntity u where u.jmbg = '" + userJmbg + "'";
-		Query query1 = em.createQuery(sql1);
-		return (AdminEntity) query1.getResultList().get(0);
-
-		
-		
-		
-
-	}
 
 }

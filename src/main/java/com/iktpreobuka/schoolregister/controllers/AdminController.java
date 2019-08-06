@@ -42,7 +42,7 @@ public class AdminController {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	AccountDao accountDao;
 
@@ -83,33 +83,74 @@ public class AdminController {
 		}
 	}
 
-	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addNewAdmin(@RequestBody AdminDTO admin) {
 
 		try {
-			if(accountDao.doesAccountExists(admin.getUsername()))
-				return new ResponseEntity<RESTError>(new RESTError(1, "account already exists"),HttpStatus.BAD_REQUEST);
+
+			if (admin.getPassword() == null || admin.getPassword() == " " || admin.getPassword() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(2, "password not specified"),
+						HttpStatus.BAD_REQUEST);
+			}
+			if (admin.getUsername() == null || admin.getUsername() == " " || admin.getUsername() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(3, "username not specified"),
+						HttpStatus.BAD_REQUEST);
+			}
+
+			if (admin.getName() == null || admin.getName() == " " || admin.getName() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(5, "first name not specified"),
+						HttpStatus.BAD_REQUEST);
+			}
+
+			if (admin.getSurname() == null || admin.getSurname() == " " || admin.getSurname() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(6, "last name not specified"),
+						HttpStatus.BAD_REQUEST);
+			}
+
+			if (admin.getEmail() == null || admin.getEmail() == " " || admin.getEmail() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(7, "email not specified"), HttpStatus.BAD_REQUEST);
+			}
+
+			if (admin.getDateOfBirth() == null) {
+				return new ResponseEntity<RESTError>(new RESTError(8, "please specify date of birth"),
+						HttpStatus.BAD_REQUEST);
+			}
+
+			if (admin.getJmbg() == null || admin.getEmail() == " " || admin.getEmail() == "") {
+				return new ResponseEntity<RESTError>(new RESTError(9, "JMBG not specified"), HttpStatus.BAD_REQUEST);
+			}
+
+			if (accountDao.doesAccountExists(admin.getUsername()))
+				return new ResponseEntity<RESTError>(new RESTError(1, "account already exists"),
+						HttpStatus.BAD_REQUEST);
+
 			AccountEntity acc = new AccountEntity();
+
 			acc.setPassword(admin.getPassword());
 			acc.setUsername(admin.getUsername());
 			acc.setRole(roleRepository.findById(1).orElse(null));
 			acc.setActive(true);
-			
-			AdminEntity ae = new AdminEntity();
-			if(!userDao.doesUserExists(admin.getJmbg()).isEmpty()) {
-				ae = userDao.addUserToAdmin(admin.getJmbg());
-				ae.setStartDate(new Date());
-				ae.setName(admin.getName());
-				//adminRepository.save(ae);
-				return new ResponseEntity<AdminEntity>(ae, HttpStatus.CREATED);
+			if (!userDao.findExistingUsers(admin.getJmbg()).isEmpty()) {
+				acc.setUser(userDao.findExistingUsers(admin.getJmbg()).get(0));
+				accountRepository.save(acc);
+				adminRepository.inserIntoAdminTable(userDao.findExistingUsers(admin.getJmbg()).get(0).getId(),
+						new Date());
+				return new ResponseEntity<AdminEntity>(adminRepository
+						.findById(userDao.findExistingUsers(admin.getJmbg()).get(0).getId()).orElse(null),
+						HttpStatus.CREATED);
 			}
-			
+			AdminEntity ae = new AdminEntity();
 			ae.setStartDate(new Date());
 			ae.setName(admin.getName());
 			ae.setJmbg(admin.getJmbg());
-			return new ResponseEntity<AdminEntity>(ae, HttpStatus.CREATED);			
-			
+			ae.setDateOfBirth(admin.getDateOfBirth());
+			ae.setEmail(admin.getEmail());
+			ae.setSurname(admin.getSurname());
+			adminRepository.save(ae);
+			acc.setUser(ae);
+			accountRepository.save(acc);
+
+			return new ResponseEntity<AdminEntity>(ae, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
