@@ -12,10 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "grade_subject", 
 uniqueConstraints = { @UniqueConstraint(columnNames = { "subjects", "grades" }) })
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class GradeSubject {
 	
 	@Id

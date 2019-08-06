@@ -23,12 +23,14 @@ public class RoleController {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addNewRole(@RequestBody RoleEntity newRole) {
 		try {
 			if (newRole.getName() == null || newRole.getName() == " ") {
-				return new ResponseEntity<RESTError>(new RESTError(1, "cannot create role with no name specified"),
+				return new ResponseEntity<RESTError>(new RESTError(1, "cannot create new role with no name specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 

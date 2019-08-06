@@ -6,8 +6,11 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "admin")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AdminEntity extends UserEntity {
 
 	// Attributes

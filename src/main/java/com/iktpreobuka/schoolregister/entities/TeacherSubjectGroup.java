@@ -16,12 +16,13 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "schedule",
 uniqueConstraints = { @UniqueConstraint(
 		columnNames = { "teacher", "subject","schoolGroup" }) })
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeacherSubjectGroup {
 	
 	@Id

@@ -14,13 +14,17 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "jmbg" }) })
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class UserEntity {
 	
 	@Id
@@ -35,6 +39,7 @@ public abstract class UserEntity {
 	private String name;
 	@Column(name = "surname")
 	private String surname;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "dob")
 	private Date dateOfBirth;
 	@Column(name = "email")

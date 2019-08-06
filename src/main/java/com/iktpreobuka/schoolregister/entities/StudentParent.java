@@ -12,9 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "child_parent", uniqueConstraints = { @UniqueConstraint(columnNames = { "children", "parents" }) })
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StudentParent {
 
 	@Id

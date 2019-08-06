@@ -14,9 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "addresses")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AddressEntity {
 	
 	@Id
@@ -27,9 +29,13 @@ public class AddressEntity {
 	@Version
 	private Integer version;
 	
+	@Column(name = "street_number")
 	private String streetNumber;
+	@Column(name = "street")
 	private String street;
+	@Column(name = "city")
 	private String city;
+	private Boolean active;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "studentAddress", fetch = FetchType.LAZY,
@@ -110,7 +116,15 @@ public class AddressEntity {
 		this.schools = schools;
 	}
 
-	public AddressEntity(Integer id, Integer version, String streetNumber, String street, String city,
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public AddressEntity(Integer id, Integer version, String streetNumber, String street, String city, Boolean active,
 			List<StudentEntity> students, List<ParentEntity> parents, List<SchoolEntity> schools) {
 		super();
 		this.id = id;
@@ -118,6 +132,7 @@ public class AddressEntity {
 		this.streetNumber = streetNumber;
 		this.street = street;
 		this.city = city;
+		this.active = active;
 		this.students = students;
 		this.parents = parents;
 		this.schools = schools;
@@ -128,5 +143,6 @@ public class AddressEntity {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	
 }

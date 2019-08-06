@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iktpreobuka.schoolregister.enumeration.EMarkDefinition;
 import com.iktpreobuka.schoolregister.enumeration.EMarkValue;
 import com.iktpreobuka.schoolregister.enumeration.ESemester;
@@ -21,6 +22,7 @@ import com.iktpreobuka.schoolregister.enumeration.ESemester;
 
 @Entity
 @Table(name = "register")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RegisterEntity {
 	
 	@Id

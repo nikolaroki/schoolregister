@@ -12,10 +12,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iktpreobuka.schoolregister.enumeration.EUserGender;
 
 @Entity
 @Table(name = "parent")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ParentEntity extends UserEntity{
 	
 	private EUserGender gender;
