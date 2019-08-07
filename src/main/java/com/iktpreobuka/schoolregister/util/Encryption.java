@@ -2,7 +2,7 @@ package com.iktpreobuka.schoolregister.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class Encription {
+public class Encryption {
 	
 	public static String getPassEncoded(String pass) {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

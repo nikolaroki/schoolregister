@@ -89,31 +89,35 @@ public class AddressController {
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
 	public ResponseEntity<?> changeAddress(@PathVariable Integer id, @RequestBody AddressEntity address) {
-		AddressEntity adr = addressRepository.findById(id).orElse(null);
-		if ((adr == null) || (adr.getActive() == false)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		if (address.getStreetNumber() == null && address.getCity() == null && address.getStreet() == null)
-			return new ResponseEntity<RESTError>(new RESTError(5, "atributes to be modified not specified"),
-					HttpStatus.BAD_REQUEST);
-		AddressEntity tempAdr = new AddressEntity();
-		tempAdr = addressDao.copyAddress(adr, tempAdr);
-		tempAdr = addressDao.checkPropToBeChanged(tempAdr, address);
-		if (!addressDao.findIfExists(tempAdr).isEmpty()) {
-			tempAdr = addressDao.findIfExists(tempAdr).get(0);
-			if (!tempAdr.getActive()) {
-				tempAdr.setActive(true);
-				adr.setActive(false);
-				addressRepository.save(tempAdr);
-				addressRepository.save(adr);
-				return new ResponseEntity<AddressEntity>(tempAdr, HttpStatus.OK);
+		try {
+			AddressEntity adr = addressRepository.findById(id).orElse(null);
+			if ((adr == null) || (adr.getActive() == false)) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			return new ResponseEntity<RESTError>(new RESTError(1, "address allready existis"),
-					HttpStatus.BAD_REQUEST);}
 
-		addressRepository.save(adr);
-		return new ResponseEntity<AddressEntity>(adr, HttpStatus.OK);
+			if (address.getStreetNumber() == null && address.getCity() == null && address.getStreet() == null)
+				return new ResponseEntity<RESTError>(new RESTError(5, "atributes to be modified not specified"),
+						HttpStatus.BAD_REQUEST);
+			AddressEntity tempAdr = new AddressEntity();
+			tempAdr = addressDao.copyAddress(adr, tempAdr);
+			tempAdr = addressDao.checkPropToBeChanged(tempAdr, address);
+			if (!addressDao.findIfExists(tempAdr).isEmpty()) {
+				tempAdr = addressDao.findIfExists(tempAdr).get(0);
+				if (!tempAdr.getActive()) {
+					tempAdr.setActive(true);
+					adr.setActive(false);
+					addressRepository.save(tempAdr);
+					addressRepository.save(adr);
+					return new ResponseEntity<AddressEntity>(tempAdr, HttpStatus.OK);
+				}
+				return new ResponseEntity<RESTError>(new RESTError(1, "address allready existis"),
+						HttpStatus.BAD_REQUEST);}
+
+			addressRepository.save(adr);
+			return new ResponseEntity<AddressEntity>(adr, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")

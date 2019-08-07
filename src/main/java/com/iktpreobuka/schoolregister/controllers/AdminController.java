@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
 import com.iktpreobuka.schoolregister.entities.dto.AdminDTO;
+import com.iktpreobuka.schoolregister.entities.dto.UserBasicInfoUpdateDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AdminRepository;
 import com.iktpreobuka.schoolregister.repositories.RoleRepository;
 import com.iktpreobuka.schoolregister.repositories.UserRepository;
 import com.iktpreobuka.schoolregister.services.AccountDao;
 import com.iktpreobuka.schoolregister.services.UserDao;
+import com.iktpreobuka.schoolregister.util.Encryption;
 import com.iktpreobuka.schoolregister.util.RESTError;
 
 @RestController
@@ -75,7 +77,7 @@ public class AdminController {
 		try {
 			AdminEntity admin = adminRepository.findById(id).orElse(null);
 
-			if (admin == null || userDao.checkifActiveAdmin(admin).isEmpty())
+			if (admin == null || userDao.getActiveAccountForAdmin(admin).isEmpty())
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			return new ResponseEntity<AdminEntity>(admin, HttpStatus.OK);
 		} catch (Exception e) {
@@ -116,7 +118,7 @@ public class AdminController {
 						HttpStatus.BAD_REQUEST);
 			}
 
-			if (admin.getJmbg() == null || admin.getEmail() == " " || admin.getEmail() == "") {
+			if (admin.getJmbg() == null || admin.getJmbg() == " " || admin.getJmbg() == "") {
 				return new ResponseEntity<RESTError>(new RESTError(9, "JMBG not specified"), HttpStatus.BAD_REQUEST);
 			}
 
@@ -126,17 +128,19 @@ public class AdminController {
 
 			AccountEntity acc = new AccountEntity();
 
-			acc.setPassword(admin.getPassword());
+			acc.setPassword(Encryption.getPassEncoded(admin.getPassword()));
 			acc.setUsername(admin.getUsername());
 			acc.setRole(roleRepository.findById(1).orElse(null));
 			acc.setActive(true);
 			if (!userDao.findExistingUsers(admin.getJmbg()).isEmpty()) {
+				if(!userDao.getUsersAdminAccount(userDao.findExistingUsers(admin.getJmbg()).get(0)).isEmpty())
+					return new ResponseEntity<RESTError>(new RESTError(11, "user has allready an admin account"),
+							HttpStatus.BAD_REQUEST);
 				acc.setUser(userDao.findExistingUsers(admin.getJmbg()).get(0));
 				accountRepository.save(acc);
 				adminRepository.inserIntoAdminTable(userDao.findExistingUsers(admin.getJmbg()).get(0).getId(),
 						new Date());
-				return new ResponseEntity<AdminEntity>(adminRepository
-						.findById(userDao.findExistingUsers(admin.getJmbg()).get(0).getId()).orElse(null),
+				return new ResponseEntity<String>("new account added to the existing user with id " + userDao.findExistingUsers(admin.getJmbg()).get(0).getId(),
 						HttpStatus.CREATED);
 			}
 			AdminEntity ae = new AdminEntity();
@@ -155,5 +159,46 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public ResponseEntity<?> updateAdminBasicInfo(@PathVariable Integer id, @RequestBody UserBasicInfoUpdateDTO admin) {
+		try {
+			AdminEntity adm = adminRepository.findById(id).orElse(null);
+			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive())==false) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+			if (admin.getName() == null && admin.getSurname() == null && admin.getDateOfBirth() == null &&
+					admin.getEmail() == null && admin.getJmbg() == null)
+				return new ResponseEntity<RESTError>(new RESTError(10, "attributes to be modified not specified"),
+						HttpStatus.BAD_REQUEST);
+			adm = userDao.checkPropToBeChangedAdmin(adm, admin);
+			adminRepository.save(adm);
+			return new ResponseEntity<AdminEntity>(adm, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public ResponseEntity<?> deleteAdminById(@PathVariable Integer id) {
+		try {
+			AdminEntity adm = adminRepository.findById(id).orElse(null);
+			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive())==false) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			userDao.getActiveAccountForAdmin(adm).get(0).setActive(false);
+			adminRepository.save(adm);
+			return new ResponseEntity<AdminEntity>(adm, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
+	
+	
 
 }
