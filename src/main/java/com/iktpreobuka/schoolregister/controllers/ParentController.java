@@ -3,6 +3,7 @@ package com.iktpreobuka.schoolregister.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,25 +31,25 @@ import com.iktpreobuka.schoolregister.util.RESTError;
 public class ParentController {
 
 	@Autowired
-	ParentRepository parentRepository;
+	private ParentRepository parentRepository;
 
 	@Autowired
-	UserDao userDao;
+	private UserDao userDao;
 
 	@Autowired
-	AccountDao accountDao;
+	private AccountDao accountDao;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	AddressDao addressDao;
+	private AddressDao addressDao;
 
 	@Autowired
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository;
 
 	@Autowired
-	AddressRepository addressRepository;
+	private AddressRepository addressRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllActive() {
@@ -239,6 +240,7 @@ public class ParentController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/updatePassword")
+	@Secured("ROLE_PARENT")
 	public ResponseEntity<?> updatePassword (@RequestBody UpdatePasswordDTO utdpsw){
 		try {
 			AccountEntity acc = accountRepository.findByUsername(accountDao.getLoggedInUsername());

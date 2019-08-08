@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
+import com.iktpreobuka.schoolregister.entities.StudentEntity;
 import com.iktpreobuka.schoolregister.entities.UserEntity;
 import com.iktpreobuka.schoolregister.entities.dto.ParentUpdateDTO;
+import com.iktpreobuka.schoolregister.entities.dto.StudentBasicInfoUpdateDTPO;
 import com.iktpreobuka.schoolregister.entities.dto.UserBasicInfoUpdateDTO;
 
 @Service
@@ -47,6 +49,18 @@ public class UserDaoImpl implements UserDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<AccountEntity> getActiveAccountForStudent(StudentEntity student) {
+
+		String sql = "select a from AccountEntity a where a.role = 3 and a.active = true and a.user = " + student.getId();
+
+		Query query = em.createQuery(sql);
+
+		return query.getResultList();
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<AccountEntity> getUsersAdminAccount(UserEntity user){
 		
 		String sql = "select a from AccountEntity a where a.role = 1 and a.user = " + user.getId();
@@ -62,6 +76,18 @@ public class UserDaoImpl implements UserDao {
 	public List<AccountEntity> getUsersParentAccount(UserEntity user){
 		
 		String sql = "select a from AccountEntity a where a.role = 4 and a.user = " + user.getId();
+
+		Query query = em.createQuery(sql);
+
+		return query.getResultList();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountEntity> getUsersStudentAccount(UserEntity user){
+		
+		String sql = "select a from AccountEntity a where a.role = 3 and a.user = " + user.getId();
 
 		Query query = em.createQuery(sql);
 
@@ -99,28 +125,51 @@ public class UserDaoImpl implements UserDao {
 		}
 	
 	@Override
-	public ParentEntity checkPropToBeChangedParent(ParentEntity exist, ParentUpdateDTO newprt) {
-		if (!(newprt.getName() == null))
-			exist.setName(newprt.getName());
-		if (!(newprt.getSurname() == null))
-			exist.setSurname(newprt.getSurname());
-		if (!(newprt.getDateOfBirth() == null))
-			exist.setDateOfBirth(newprt.getDateOfBirth());
-		if (!(newprt.getJmbg() == null))
-			exist.setJmbg(newprt.getJmbg());
-		if (!(newprt.getEmail() == null))
-			exist.setEmail(newprt.getEmail());
-		if (!(newprt.getGender() == null))
-			exist.setGender(newprt.getGender());
-		if (!(newprt.getPhone() == null))
-			exist.setPhone(newprt.getPhone());
+	public ParentEntity checkPropToBeChangedParent(ParentEntity exist, ParentUpdateDTO newAtr) {
+		if (!(newAtr.getName() == null))
+			exist.setName(newAtr.getName());
+		if (!(newAtr.getSurname() == null))
+			exist.setSurname(newAtr.getSurname());
+		if (!(newAtr.getDateOfBirth() == null))
+			exist.setDateOfBirth(newAtr.getDateOfBirth());
+		if (!(newAtr.getJmbg() == null))
+			exist.setJmbg(newAtr.getJmbg());
+		if (!(newAtr.getEmail() == null))
+			exist.setEmail(newAtr.getEmail());
+		if (!(newAtr.getGender() == null))
+			exist.setGender(newAtr.getGender());
+		if (!(newAtr.getPhone() == null))
+			exist.setPhone(newAtr.getPhone());
 		
-		if (!(newprt.getStreetNumber() == null))
-			exist.getParentAddress().setStreetNumber(newprt.getStreetNumber());
-		if (!(newprt.getStreet() == null))
-			exist.getParentAddress().setStreet(newprt.getStreet());
-		if (!(newprt.getCity() == null))
-			exist.getParentAddress().setCity(newprt.getCity());
+		if (!(newAtr.getStreetNumber() == null))
+			exist.getParentAddress().setStreetNumber(newAtr.getStreetNumber());
+		if (!(newAtr.getStreet() == null))
+			exist.getParentAddress().setStreet(newAtr.getStreet());
+		if (!(newAtr.getCity() == null))
+			exist.getParentAddress().setCity(newAtr.getCity());
+		return exist;
+		}
+
+	@Override
+	public StudentEntity checkPropToBeChangedStudent(StudentEntity exist, StudentBasicInfoUpdateDTPO newAtr) {
+		if (!(newAtr.getName() == null))
+			exist.setName(newAtr.getName());
+		if (!(newAtr.getSurname() == null))
+			exist.setSurname(newAtr.getSurname());
+		if (!(newAtr.getDateOfBirth() == null))
+			exist.setDateOfBirth(newAtr.getDateOfBirth());
+		if (!(newAtr.getJmbg() == null))
+			exist.setJmbg(newAtr.getJmbg());
+		if (!(newAtr.getEmail() == null))
+			exist.setEmail(newAtr.getEmail());
+		if (!(newAtr.getGender() == null))
+			exist.setGender(newAtr.getGender());		
+		if (!(newAtr.getStreetNumber() == null))
+			exist.getStudentAddress().setStreetNumber(newAtr.getStreetNumber());
+		if (!(newAtr.getStreet() == null))
+			exist.getStudentAddress().setStreet(newAtr.getStreet());
+		if (!(newAtr.getCity() == null))
+			exist.getStudentAddress().setCity(newAtr.getCity());
 		return exist;
 		}
 

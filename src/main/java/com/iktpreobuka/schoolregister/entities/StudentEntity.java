@@ -24,7 +24,7 @@ public class StudentEntity extends UserEntity{
 	
 	private String pictureUrl;
 	
-	private String jmbg;
+	
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "schoolGroup")
@@ -61,14 +61,6 @@ public class StudentEntity extends UserEntity{
 		this.pictureUrl = pictureUrl;
 	}
 
-	public String getJmbg() {
-		return jmbg;
-	}
-
-	public void setJmbg(String jmbg) {
-		this.jmbg = jmbg;
-	}
-
 	public GroupEntity getSchoolGroup() {
 		return schoolGroup;
 	}
@@ -102,13 +94,11 @@ public class StudentEntity extends UserEntity{
 	}
 
 	public StudentEntity(Integer id, Integer version, String name, String surname, Date dateOfBirth, String email,
-			String jmbg, List<AccountEntity> accounts, EUserGender gender, String pictureUrl, String jmbg2,
-			GroupEntity schoolGroup, List<RegisterEntity> registers, List<StudentParent> parents,
-			AddressEntity studentAddress) {
+			String jmbg, List<AccountEntity> accounts, EUserGender gender, String pictureUrl, GroupEntity schoolGroup,
+			List<RegisterEntity> registers, List<StudentParent> parents, AddressEntity studentAddress) {
 		super(id, version, name, surname, dateOfBirth, email, jmbg, accounts);
 		this.gender = gender;
 		this.pictureUrl = pictureUrl;
-		jmbg = jmbg2;
 		this.schoolGroup = schoolGroup;
 		this.registers = registers;
 		this.parents = parents;
@@ -127,14 +117,6 @@ public class StudentEntity extends UserEntity{
 	}
 
 	
-
-	
-
-	
-	
-	
-	
-
 	
 	
 	
