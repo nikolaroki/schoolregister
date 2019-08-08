@@ -6,15 +6,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
+import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 
 @Service
 public class AccountDaoImp implements AccountDao {
 
 	@PersistenceContext
 	EntityManager em;
+
+	@Autowired
+	AccountRepository accountRepository;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -41,6 +48,13 @@ public class AccountDaoImp implements AccountDao {
 		List<AccountEntity> result = query.getResultList();
 		return result;
 
+	}
+
+	@Override
+	public String getLoggedInUsername() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
+	
 	}
 
 }

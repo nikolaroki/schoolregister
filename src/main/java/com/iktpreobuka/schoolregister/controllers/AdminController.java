@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
 import com.iktpreobuka.schoolregister.entities.dto.AdminDTO;
+import com.iktpreobuka.schoolregister.entities.dto.UpdatePasswordDTO;
 import com.iktpreobuka.schoolregister.entities.dto.UserBasicInfoUpdateDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AdminRepository;
@@ -195,6 +196,29 @@ public class AdminController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/updatePassword")
+	public ResponseEntity<?> updatePassword (@RequestBody UpdatePasswordDTO adm){
+		try {
+			AccountEntity acc = accountRepository.findByUsername(accountDao.getLoggedInUsername());
+			if(acc.getRole().getId() != 1)
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			if(!Encryption.comparePassword(adm.getOldPassword(), acc.getPassword()))
+				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"),
+						HttpStatus.BAD_REQUEST);
+			if(!adm.getNewPassword().equals(adm.getNewPasswordConf()))
+				return new ResponseEntity<RESTError>(new RESTError(99, "new password not matching"),
+						HttpStatus.BAD_REQUEST);
+			acc.setPassword(Encryption.getPassEncoded(adm.getNewPassword()));
+			accountRepository.save(acc);
+			return new ResponseEntity<AdminEntity>(adminRepository.findById(acc.getUser().getId()).orElse(null), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+				
+
 	}
 	
 	

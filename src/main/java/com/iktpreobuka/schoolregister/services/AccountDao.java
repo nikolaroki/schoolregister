@@ -10,4 +10,7 @@ public interface AccountDao {
 
 	List<AccountEntity> findByUserId(Integer userId);
 
+
+	String getLoggedInUsername();
+
 }

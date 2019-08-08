@@ -14,6 +14,7 @@ import com.iktpreobuka.schoolregister.entities.AddressEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
 import com.iktpreobuka.schoolregister.entities.dto.ParentDTO;
 import com.iktpreobuka.schoolregister.entities.dto.ParentUpdateDTO;
+import com.iktpreobuka.schoolregister.entities.dto.UpdatePasswordDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AddressRepository;
 import com.iktpreobuka.schoolregister.repositories.ParentRepository;
@@ -235,6 +236,28 @@ public class ParentController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/updatePassword")
+	public ResponseEntity<?> updatePassword (@RequestBody UpdatePasswordDTO utdpsw){
+		try {
+			AccountEntity acc = accountRepository.findByUsername(accountDao.getLoggedInUsername());
+			if(acc.getRole().getId() != 4)
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			if(!Encryption.comparePassword(utdpsw.getOldPassword(), acc.getPassword()))
+				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"),
+						HttpStatus.BAD_REQUEST);
+			if(!utdpsw.getNewPassword().equals(utdpsw.getNewPasswordConf()))
+				return new ResponseEntity<RESTError>(new RESTError(99, "new password not matching"),
+						HttpStatus.BAD_REQUEST);
+			acc.setPassword(Encryption.getPassEncoded(utdpsw.getNewPassword()));
+			accountRepository.save(acc);
+			return new ResponseEntity<ParentEntity>(parentRepository.findById(acc.getUser().getId()).orElse(null), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+				
+
 	}
 
 }

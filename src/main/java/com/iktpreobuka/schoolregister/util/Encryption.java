@@ -8,6 +8,12 @@ public class Encryption {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder.encode(pass);
 	}
+	
+	public static Boolean comparePassword(String normalPass,String crypPass) {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder.matches(normalPass, crypPass);
+		
+	}
 
 	public static void main(String[] args) {
 		System.out.println(getPassEncoded("sifra"));
