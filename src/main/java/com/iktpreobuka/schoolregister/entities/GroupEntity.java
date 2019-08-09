@@ -36,6 +36,10 @@ public class GroupEntity {
 	
 	private Year generationYear;
 	
+	private Boolean active;
+	
+	
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "schoolGroup", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
@@ -57,6 +61,16 @@ public class GroupEntity {
 	@OneToMany(mappedBy = "schoolGroup", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<StudentEntity> students;
+
+	
+	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	public Integer getId() {
 		return id;
@@ -122,13 +136,16 @@ public class GroupEntity {
 		this.students = students;
 	}
 
-	public GroupEntity(Integer id, Integer version, Year generationYear, List<TeacherSubjectGroup> schedules,
-			GradeEntity groupGrade, SchoolEntity groupSchool, TeacherEntity homeRoomTeacher,
-			List<StudentEntity> students) {
+
+
+	public GroupEntity(Integer id, Integer version, Year generationYear, Boolean active,
+			List<TeacherSubjectGroup> schedules, GradeEntity groupGrade, SchoolEntity groupSchool,
+			TeacherEntity homeRoomTeacher, List<StudentEntity> students) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.generationYear = generationYear;
+		this.active = active;
 		this.schedules = schedules;
 		this.groupGrade = groupGrade;
 		this.groupSchool = groupSchool;
