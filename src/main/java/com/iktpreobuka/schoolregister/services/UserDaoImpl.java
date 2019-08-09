@@ -12,9 +12,11 @@ import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
 import com.iktpreobuka.schoolregister.entities.StudentEntity;
+import com.iktpreobuka.schoolregister.entities.TeacherEntity;
 import com.iktpreobuka.schoolregister.entities.UserEntity;
 import com.iktpreobuka.schoolregister.entities.dto.ParentUpdateDTO;
 import com.iktpreobuka.schoolregister.entities.dto.StudentBasicInfoUpdateDTPO;
+import com.iktpreobuka.schoolregister.entities.dto.TeacherBasicInfoUpdateDTO;
 import com.iktpreobuka.schoolregister.entities.dto.UserBasicInfoUpdateDTO;
 
 @Service
@@ -61,6 +63,18 @@ public class UserDaoImpl implements UserDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<AccountEntity> getActiveAccountForTeacher(TeacherEntity teacher) {
+
+		String sql = "select a from AccountEntity a where a.role = 2 and a.active = true and a.user = " + teacher.getId();
+
+		Query query = em.createQuery(sql);
+
+		return query.getResultList();
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<AccountEntity> getUsersAdminAccount(UserEntity user){
 		
 		String sql = "select a from AccountEntity a where a.role = 1 and a.user = " + user.getId();
@@ -88,6 +102,18 @@ public class UserDaoImpl implements UserDao {
 	public List<AccountEntity> getUsersStudentAccount(UserEntity user){
 		
 		String sql = "select a from AccountEntity a where a.role = 3 and a.user = " + user.getId();
+
+		Query query = em.createQuery(sql);
+
+		return query.getResultList();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccountEntity> getUsersTeacherAccount(UserEntity user){
+		
+		String sql = "select a from AccountEntity a where a.role = 2 and a.user = " + user.getId();
 
 		Query query = em.createQuery(sql);
 
@@ -173,6 +199,26 @@ public class UserDaoImpl implements UserDao {
 		if (!(newAtr.getCity() == null))
 			exist.getStudentAddress().setCity(newAtr.getCity());
 		return exist;
+		}
+	
+	@Override
+	public TeacherEntity checkPropToBeChangedTeacher(TeacherEntity exist, TeacherBasicInfoUpdateDTO newAtr) {
+		if (!(newAtr.getName() == null))
+			exist.setName(newAtr.getName());
+		if (!(newAtr.getSurname() == null))
+			exist.setSurname(newAtr.getSurname());
+		if (!(newAtr.getDateOfBirth() == null))
+			exist.setDateOfBirth(newAtr.getDateOfBirth());
+		if (!(newAtr.getJmbg() == null))
+			exist.setJmbg(newAtr.getJmbg());
+		if (!(newAtr.getEmail() == null))
+			exist.setEmail(newAtr.getEmail());
+		if (!(newAtr.getPay() == null))
+			exist.setPay(newAtr.getPay());
+		if (!(newAtr.getTitle() == null))
+			exist.setTitle(newAtr.getTitle());
+		return exist;
+	
 		}
 
 

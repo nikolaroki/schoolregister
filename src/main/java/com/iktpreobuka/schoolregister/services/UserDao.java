@@ -6,9 +6,11 @@ import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AdminEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
 import com.iktpreobuka.schoolregister.entities.StudentEntity;
+import com.iktpreobuka.schoolregister.entities.TeacherEntity;
 import com.iktpreobuka.schoolregister.entities.UserEntity;
 import com.iktpreobuka.schoolregister.entities.dto.ParentUpdateDTO;
 import com.iktpreobuka.schoolregister.entities.dto.StudentBasicInfoUpdateDTPO;
+import com.iktpreobuka.schoolregister.entities.dto.TeacherBasicInfoUpdateDTO;
 import com.iktpreobuka.schoolregister.entities.dto.UserBasicInfoUpdateDTO;
 
 public interface UserDao {
@@ -32,6 +34,12 @@ public interface UserDao {
 	List<AccountEntity> getUsersStudentAccount(UserEntity user);
 
 	StudentEntity checkPropToBeChangedStudent(StudentEntity exist, StudentBasicInfoUpdateDTPO newAtr);
+
+	List<AccountEntity> getActiveAccountForTeacher(TeacherEntity teacher);
+
+	List<AccountEntity> getUsersTeacherAccount(UserEntity user);
+
+	TeacherEntity checkPropToBeChangedTeacher(TeacherEntity exist, TeacherBasicInfoUpdateDTO newAtr);
 
 	
 
