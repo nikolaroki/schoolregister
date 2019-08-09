@@ -112,7 +112,7 @@ public class AddressController {
 				}
 				return new ResponseEntity<RESTError>(new RESTError(1, "address allready existis"),
 						HttpStatus.BAD_REQUEST);}
-
+			adr = addressDao.checkPropToBeChanged(adr, address);
 			addressRepository.save(adr);
 			return new ResponseEntity<AddressEntity>(adr, HttpStatus.OK);
 		} catch (Exception e) {

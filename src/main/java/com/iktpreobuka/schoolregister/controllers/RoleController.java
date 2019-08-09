@@ -23,8 +23,6 @@ public class RoleController {
 
 	@Autowired
 	private RoleRepository roleRepository;
-	
-
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addNewRole(@RequestBody RoleEntity newRole) {
@@ -36,6 +34,11 @@ public class RoleController {
 
 			RoleEntity role = new RoleEntity();
 			role.setName(newRole.getName());
+
+			List<RoleEntity> roles = roleRepository.findByName(newRole.getName());
+
+			if (!roles.isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(3, "role allready exists"), HttpStatus.BAD_REQUEST);
 
 			roleRepository.save(role);
 			return new ResponseEntity<RoleEntity>(role, HttpStatus.CREATED);

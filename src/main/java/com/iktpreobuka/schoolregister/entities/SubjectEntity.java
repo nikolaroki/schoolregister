@@ -30,6 +30,7 @@ public class SubjectEntity {
 
 	private String name;
 	private Integer classesPerWeek;
+	private Boolean active;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "grade", fetch = FetchType.LAZY,
@@ -40,6 +41,16 @@ public class SubjectEntity {
 	@OneToMany(mappedBy = "subject", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<TeacherSubjectGroup> schedules;
+
+	
+	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	public Integer getId() {
 		return id;
@@ -89,13 +100,16 @@ public class SubjectEntity {
 		this.schedules = schedules;
 	}
 
-	public SubjectEntity(Integer id, Integer version, String name, Integer classesPerWeek, List<GradeSubject> grades,
-			List<TeacherSubjectGroup> schedules) {
+	
+
+	public SubjectEntity(Integer id, Integer version, String name, Integer classesPerWeek, Boolean active,
+			List<GradeSubject> grades, List<TeacherSubjectGroup> schedules) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.name = name;
 		this.classesPerWeek = classesPerWeek;
+		this.active = active;
 		this.grades = grades;
 		this.schedules = schedules;
 	}

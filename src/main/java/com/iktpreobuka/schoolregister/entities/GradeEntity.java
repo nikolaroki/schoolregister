@@ -23,7 +23,7 @@ public class GradeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String gradeName;
+	private String name;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "groupGrade", fetch = FetchType.LAZY,
@@ -43,12 +43,14 @@ public class GradeEntity {
 		this.id = id;
 	}
 
-	public String getGradeName() {
-		return gradeName;
+
+
+	public String getName() {
+		return name;
 	}
 
-	public void setGradeName(String gradeName) {
-		this.gradeName = gradeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<GroupEntity> getGroups() {
@@ -70,7 +72,7 @@ public class GradeEntity {
 	public GradeEntity(Integer id, String gradeName, List<GroupEntity> groups, List<GradeSubject> subjects) {
 		super();
 		this.id = id;
-		this.gradeName = gradeName;
+		this.name = gradeName;
 		this.groups = groups;
 		this.subjects = subjects;
 	}
