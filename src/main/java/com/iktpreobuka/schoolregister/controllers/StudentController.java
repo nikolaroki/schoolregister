@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AddressEntity;
+import com.iktpreobuka.schoolregister.entities.GroupEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
 import com.iktpreobuka.schoolregister.entities.StudentEntity;
 import com.iktpreobuka.schoolregister.entities.StudentParent;
@@ -26,6 +27,7 @@ import com.iktpreobuka.schoolregister.entities.dto.UpdatePasswordDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AddressRepository;
 import com.iktpreobuka.schoolregister.repositories.ChildParentRepository;
+import com.iktpreobuka.schoolregister.repositories.GroupRepository;
 import com.iktpreobuka.schoolregister.repositories.ParentRepository;
 import com.iktpreobuka.schoolregister.repositories.RoleRepository;
 import com.iktpreobuka.schoolregister.repositories.StudentRepository;
@@ -69,6 +71,9 @@ public class StudentController {
 
 	@Autowired
 	private ChildParentRepository childParentRepository;
+
+	@Autowired
+	private GroupRepository groupRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllActive() {
@@ -332,7 +337,7 @@ public class StudentController {
 			if (parent == null || userDao.getActiveAccountForParent(parent).isEmpty())
 				return new ResponseEntity<RESTError>(new RESTError(17, "parent not found"), HttpStatus.NOT_FOUND);
 			List<StudentEntity> students = childParentRepository.findChildrenByParent(parent);
-			if(students.isEmpty())
+			if (students.isEmpty())
 				return new ResponseEntity<RESTError>(new RESTError(19, "parent has no children"), HttpStatus.NOT_FOUND);
 			return new ResponseEntity<List<StudentEntity>>(students, HttpStatus.OK);
 		} catch (Exception e) {
@@ -340,6 +345,41 @@ public class StudentController {
 
 		}
 
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{studentId}/group/{groupId}")
+	public ResponseEntity<?> addStudentToGroup(@PathVariable("studentId") Integer studentId,
+			@PathVariable("groupId") Integer groupId) {
+		try {
+			StudentEntity student = studentRepository.findById(studentId).orElse(null);
+
+			if (student == null || userDao.getActiveAccountForStudent(student).isEmpty())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			GroupEntity group = groupRepository.findById(groupId).orElse(null);
+
+			if (group == null || !group.getActive())
+				return new ResponseEntity<RESTError>(new RESTError(20, "group not found"), HttpStatus.NOT_FOUND);
+			student.setSchoolGroup(group);
+			studentRepository.save(student);
+			return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/byGroup/{groupId}")
+	public ResponseEntity<?> findStudentInGroup(@PathVariable("groupId") Integer groupId) {
+		try {
+			GroupEntity group = groupRepository.findById(groupId).orElse(null);
+			if (group == null || !group.getActive())
+				return new ResponseEntity<RESTError>(new RESTError(20, "group not found"), HttpStatus.NOT_FOUND);
+			List<StudentEntity> students = userDao.findBySchoolGroupAndActive(groupId);
+			if (students.isEmpty())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<StudentEntity>>(students, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

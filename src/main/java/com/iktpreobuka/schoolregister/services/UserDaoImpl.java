@@ -37,6 +37,18 @@ public class UserDaoImpl implements UserDao {
 
 	}
 	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudentEntity> findBySchoolGroupAndActive(Integer group){
+		String sql = "SELECT s FROM StudentEntity s, AccountEntity ac where s.id = ac.user and ac.active = true and ac.role = 3 and s.schoolGroup = " 
+	+ group;
+
+		Query query = em.createQuery(sql);
+
+		return query.getResultList();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccountEntity> getActiveAccountForParent(ParentEntity parent) {

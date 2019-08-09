@@ -41,6 +41,8 @@ public interface UserDao {
 
 	TeacherEntity checkPropToBeChangedTeacher(TeacherEntity exist, TeacherBasicInfoUpdateDTO newAtr);
 
+	List<StudentEntity> findBySchoolGroupAndActive(Integer group);
+
 	
 
 

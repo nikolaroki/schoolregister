@@ -17,5 +17,7 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
 	@Query(value = "INSERT INTO student (user_id,address,gender) VALUES (:id,:address,:gender)", nativeQuery = true)
 	@Transactional
 	void inserIntoStudentTable(Integer id, Integer address, Integer gender);
+
+
 	
 }
