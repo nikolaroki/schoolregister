@@ -3,6 +3,7 @@ package com.iktpreobuka.schoolregister.entities;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,9 @@ public class SchoolEntity {
 
 	@Version
 	private Integer version;
+	
+	@Column(name = "active")
+	private Boolean active;
 	
 	private String schoolName;
 	
@@ -82,14 +86,25 @@ public class SchoolEntity {
 		this.groups = groups;
 	}
 
-	public SchoolEntity(Integer id, Integer version, String schoolName, AddressEntity schoolAddress,
-			 List<GroupEntity> groups) {
+
+
+	public SchoolEntity(Integer id, Integer version, Boolean active, String schoolName, AddressEntity schoolAddress,
+			List<GroupEntity> groups) {
 		super();
 		this.id = id;
 		this.version = version;
+		this.active = active;
 		this.schoolName = schoolName;
 		this.schoolAddress = schoolAddress;
 		this.groups = groups;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public SchoolEntity() {
