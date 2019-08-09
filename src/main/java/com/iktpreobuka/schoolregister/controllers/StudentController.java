@@ -1,6 +1,7 @@
 package com.iktpreobuka.schoolregister.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AddressEntity;
+import com.iktpreobuka.schoolregister.entities.ParentEntity;
 import com.iktpreobuka.schoolregister.entities.StudentEntity;
+import com.iktpreobuka.schoolregister.entities.StudentParent;
 import com.iktpreobuka.schoolregister.entities.dto.StudentBasicInfoUpdateDTPO;
 import com.iktpreobuka.schoolregister.entities.dto.StudentDTO;
 import com.iktpreobuka.schoolregister.entities.dto.UpdatePasswordDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AddressRepository;
+import com.iktpreobuka.schoolregister.repositories.ChildParentRepository;
+import com.iktpreobuka.schoolregister.repositories.ParentRepository;
 import com.iktpreobuka.schoolregister.repositories.RoleRepository;
 import com.iktpreobuka.schoolregister.repositories.StudentRepository;
 import com.iktpreobuka.schoolregister.services.AccountDao;
@@ -34,35 +39,41 @@ import com.iktpreobuka.schoolregister.util.RESTError;
 @RestController
 @RequestMapping(path = "/eregister/student")
 public class StudentController {
-	
+
 	@Autowired
 	private StudentRepository studentRepository;
-	
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private AccountDao accountDao;
-	
+
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	@Autowired
 	private AddressDao addressDao;
-	
+
 	@Autowired
 	private AccountRepository accountRepository;
 
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
 	private FileHandler fileHandler;
-	
+
+	@Autowired
+	private ParentRepository parentRepository;
+
+	@Autowired
+	private ChildParentRepository childParentRepository;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllActive() {
 		try {
-			Iterable<StudentEntity> students= studentRepository.findAllActive();
+			Iterable<StudentEntity> students = studentRepository.findAllActive();
 			return new ResponseEntity<Iterable<StudentEntity>>(students, HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -70,7 +81,7 @@ public class StudentController {
 		}
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/all")
 	public ResponseEntity<?> getAll() {
 		try {
@@ -82,7 +93,7 @@ public class StudentController {
 		}
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> findStudentById(@PathVariable Integer id) {
 		try {
@@ -96,7 +107,6 @@ public class StudentController {
 		}
 	}
 
-	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addNewStudent(@RequestBody StudentDTO student) {
 
@@ -134,7 +144,8 @@ public class StudentController {
 				return new ResponseEntity<RESTError>(new RESTError(9, "JMBG not specified"), HttpStatus.BAD_REQUEST);
 			}
 
-			if (student.getStreetNumber() == null || student.getStreetNumber() == " " || student.getStreetNumber() == "") {
+			if (student.getStreetNumber() == null || student.getStreetNumber() == " "
+					|| student.getStreetNumber() == "") {
 				return new ResponseEntity<RESTError>(new RESTError(11, "street number not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
@@ -180,7 +191,7 @@ public class StudentController {
 				accountRepository.save(acc);
 				addressRepository.save(adr);
 				studentRepository.inserIntoStudentTable(userDao.findExistingUsers(student.getJmbg()).get(0).getId(),
-						adr.getId(),student.getGender().ordinal());
+						adr.getId(), student.getGender().ordinal());
 				return new ResponseEntity<String>("new account added to the existing user with id "
 						+ userDao.findExistingUsers(student.getJmbg()).get(0).getId(), HttpStatus.CREATED);
 			}
@@ -192,7 +203,8 @@ public class StudentController {
 			stud.setSurname(student.getSurname());
 			stud.setGender(student.getGender());
 			addressRepository.save(adr);
-			stud.setStudentAddress(adr);;
+			stud.setStudentAddress(adr);
+			;
 			studentRepository.save(stud);
 			acc.setUser(stud);
 			accountRepository.save(acc);
@@ -204,7 +216,8 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-	public ResponseEntity<?> updateStudentBasicInfo(@PathVariable Integer id, @RequestBody StudentBasicInfoUpdateDTPO student) {
+	public ResponseEntity<?> updateStudentBasicInfo(@PathVariable Integer id,
+			@RequestBody StudentBasicInfoUpdateDTPO student) {
 		try {
 			StudentEntity stud = studentRepository.findById(id).orElse(null);
 			if ((stud == null) || (!userDao.getActiveAccountForStudent(stud).get(0).getActive())) {
@@ -213,8 +226,7 @@ public class StudentController {
 
 			if (student.getName() == null && student.getSurname() == null && student.getDateOfBirth() == null
 					&& student.getEmail() == null && student.getJmbg() == null && student.getGender() == null
-					&& student.getStreetNumber() == null && student.getStreet() == null
-					&& student.getCity() == null)
+					&& student.getStreetNumber() == null && student.getStreet() == null && student.getCity() == null)
 				return new ResponseEntity<RESTError>(new RESTError(15, "attributes to be modified not specified"),
 						HttpStatus.BAD_REQUEST);
 			stud = userDao.checkPropToBeChangedStudent(stud, student);
@@ -226,7 +238,6 @@ public class StudentController {
 		}
 	}
 
-	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	public ResponseEntity<?> deleteStudentById(@PathVariable Integer id) {
 		try {
@@ -242,46 +253,93 @@ public class StudentController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/updatePassword")
 	@Secured("ROLE_STUDENT")
-	public ResponseEntity<?> updatePassword (@RequestBody UpdatePasswordDTO utdpsw){
+	public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO utdpsw) {
 		try {
 			AccountEntity acc = accountRepository.findByUsername(accountDao.getLoggedInUsername());
-			if(acc.getRole().getId() != 3)
+			if (acc.getRole().getId() != 3)
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-			if(!Encryption.comparePassword(utdpsw.getOldPassword(), acc.getPassword()))
-				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"),
-						HttpStatus.BAD_REQUEST);
-			if(!utdpsw.getNewPassword().equals(utdpsw.getNewPasswordConf()))
+			if (!Encryption.comparePassword(utdpsw.getOldPassword(), acc.getPassword()))
+				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"), HttpStatus.BAD_REQUEST);
+			if (!utdpsw.getNewPassword().equals(utdpsw.getNewPasswordConf()))
 				return new ResponseEntity<RESTError>(new RESTError(99, "new password not matching"),
 						HttpStatus.BAD_REQUEST);
 			acc.setPassword(Encryption.getPassEncoded(utdpsw.getNewPassword()));
 			accountRepository.save(acc);
-			return new ResponseEntity<StudentEntity>(studentRepository.findById(acc.getUser().getId()).orElse(null), HttpStatus.OK);
+			return new ResponseEntity<StudentEntity>(studentRepository.findById(acc.getUser().getId()).orElse(null),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/uploadImage/{id}")
 	public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") Integer id) {
 
-		StudentEntity student = studentRepository.findById(id).orElse(null);
-		if (student == null || !userDao.getActiveAccountForStudent(student).get(0).getActive())
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-		String result = null;
 		try {
-			result = fileHandler.singleFileUpload(file);
-		} catch (IOException e) {
+			StudentEntity student = studentRepository.findById(id).orElse(null);
+			if (student == null || !userDao.getActiveAccountForStudent(student).get(0).getActive())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+			String result = null;
+			try {
+				result = fileHandler.singleFileUpload(file);
+			} catch (IOException e) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			student.setPictureUrl(result);
+			studentRepository.save(student);
+			return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		student.setPictureUrl(result);
-		studentRepository.save(student);
-		return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/addParent/{parentId}/toChild/{childId}")
+	public ResponseEntity<?> addFamilyRelationship(@PathVariable("parentId") Integer parentId,
+			@PathVariable("childId") Integer childId) {
+		try {
+			StudentEntity student = studentRepository.findById(childId).orElse(null);
+			if (student == null || !userDao.getActiveAccountForStudent(student).get(0).getActive())
+				return new ResponseEntity<RESTError>(new RESTError(16, "student not found"), HttpStatus.NOT_FOUND);
+			ParentEntity parent = parentRepository.findById(parentId).orElse(null);
+			if (parent == null || !userDao.getActiveAccountForParent(parent).get(0).getActive())
+				return new ResponseEntity<RESTError>(new RESTError(17, "parent not found"), HttpStatus.NOT_FOUND);
+
+			List<StudentParent> cp = childParentRepository.findByChildAndParent(student, parent);
+			if (!cp.isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(18, "entry already in DB"), HttpStatus.NOT_FOUND);
+
+			StudentParent childparent = new StudentParent();
+			childparent.setChild(student);
+			childparent.setParent(parent);
+
+			childParentRepository.save(childparent);
+
+			return new ResponseEntity<StudentParent>(childparent, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/children/{id}")
+	public ResponseEntity<?> addChildrenFromParent(@PathVariable("id") Integer id) {
+		try {
+			ParentEntity parent = parentRepository.findById(id).orElse(null);
+			if (parent == null || userDao.getActiveAccountForParent(parent).isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(17, "parent not found"), HttpStatus.NOT_FOUND);
+			List<StudentEntity> students = childParentRepository.findChildrenByParent(parent);
+			if(students.isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(19, "parent has no children"), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<StudentEntity>>(students, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+
+	}
 
 }

@@ -1,5 +1,7 @@
 package com.iktpreobuka.schoolregister.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AddressEntity;
 import com.iktpreobuka.schoolregister.entities.ParentEntity;
+import com.iktpreobuka.schoolregister.entities.StudentEntity;
 import com.iktpreobuka.schoolregister.entities.dto.ParentDTO;
 import com.iktpreobuka.schoolregister.entities.dto.ParentUpdateDTO;
 import com.iktpreobuka.schoolregister.entities.dto.UpdatePasswordDTO;
 import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.AddressRepository;
+import com.iktpreobuka.schoolregister.repositories.ChildParentRepository;
 import com.iktpreobuka.schoolregister.repositories.ParentRepository;
 import com.iktpreobuka.schoolregister.repositories.RoleRepository;
+import com.iktpreobuka.schoolregister.repositories.StudentRepository;
 import com.iktpreobuka.schoolregister.services.AccountDao;
 import com.iktpreobuka.schoolregister.services.AddressDao;
 import com.iktpreobuka.schoolregister.services.UserDao;
@@ -50,6 +55,12 @@ public class ParentController {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private StudentRepository studentRepository;
+	
+	@Autowired
+	private ChildParentRepository childParentRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllActive() {
@@ -259,6 +270,23 @@ public class ParentController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 				
+
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/parents/{id}")
+	public ResponseEntity<?> getParentsFromChild(@PathVariable("id") Integer id) {
+		try {
+			StudentEntity child = studentRepository.findById(id).orElse(null);
+			if (child == null || userDao.getActiveAccountForStudent(child).isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(16, "child not found"), HttpStatus.NOT_FOUND);
+			List<ParentEntity> parents = childParentRepository.findParentsByChild(child);
+			if(parents.isEmpty())
+				return new ResponseEntity<RESTError>(new RESTError(20, "child has no parents"), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<ParentEntity>>(parents, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
 
 	}
 
