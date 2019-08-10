@@ -30,6 +30,8 @@ public class TeacherSubjectGroup {
 	@Column(name = "schedule_id")
 	private Integer id;
 	
+	private Boolean active;
+	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacher")
 	private TeacherEntity teacher;
@@ -41,6 +43,7 @@ public class TeacherSubjectGroup {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "schoolGroup")
 	private GroupEntity schoolGroup;
+	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY,
@@ -87,14 +90,25 @@ public class TeacherSubjectGroup {
 		this.registers = registers;
 	}
 
-	public TeacherSubjectGroup(Integer id, TeacherEntity teacher, SubjectEntity subject, GroupEntity schoolGroup,
-			List<RegisterEntity> registers) {
+	
+
+	public TeacherSubjectGroup(Integer id, Boolean active, TeacherEntity teacher, SubjectEntity subject,
+			GroupEntity schoolGroup, List<RegisterEntity> registers) {
 		super();
 		this.id = id;
+		this.active = active;
 		this.teacher = teacher;
 		this.subject = subject;
 		this.schoolGroup = schoolGroup;
 		this.registers = registers;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public TeacherSubjectGroup() {
