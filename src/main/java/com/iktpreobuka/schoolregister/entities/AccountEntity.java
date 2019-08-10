@@ -32,6 +32,7 @@ public class AccountEntity {
 	private Boolean active;
 	
 	@Column(name = "username")
+	//@Size(min=2, max=20, message = "username must be between {min} and {max} characters long.")
 	private String username;
 	
 	@Column(name = "password")

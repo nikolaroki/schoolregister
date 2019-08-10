@@ -13,6 +13,7 @@ public class FileHandlerImpl implements FileHandler{
 	
 	//Save the uploaded file to this folder
 		private static String UPLOADED_FOLDER = "C:\\temp\\";
+		//private static String LOG_PATH = "C:\\Users\\Kovacic\\Documents\\workspace1\\school_register\\logs";
 		
 		@Override
 		public String singleFileUpload(MultipartFile file) throws IOException {
@@ -29,5 +30,7 @@ public class FileHandlerImpl implements FileHandler{
 				throw e;
 			}
 		}
+		
+
 
 }

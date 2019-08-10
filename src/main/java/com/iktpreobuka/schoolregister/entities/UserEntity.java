@@ -36,16 +36,22 @@ public class UserEntity {
 	private Integer version;
 	
 	@Column(name = "name")
+	//@NotNull(message = "first name not specified")
 	private String name;
 	@Column(name = "surname")
+	//@NotNull(message = "last name not specified")
 	private String surname;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "dob")
 	private Date dateOfBirth;
+	//@NotNull(message = "email not specified")
+	//@Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$",
+	//message="email format not valid.")
 	@Column(name = "email")
 	private String email;
-	
+	//@Size(min=13, max=14, message = "JMBF has 13 numbers.")
 	@Column(name = "jmbg")
+	
 	private String jmbg;
 	
 	@JsonIgnore

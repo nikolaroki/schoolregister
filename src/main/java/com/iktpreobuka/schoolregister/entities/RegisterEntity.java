@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iktpreobuka.schoolregister.enumeration.EMarkDefinition;
 import com.iktpreobuka.schoolregister.enumeration.EMarkValue;
@@ -32,6 +33,7 @@ public class RegisterEntity {
 	@Column(name = "register_id")
 	private Integer id;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date registerEntryDate;
 	private ESemester semester;
 	

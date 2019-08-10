@@ -38,7 +38,7 @@ public class EmailDaoImpl implements EmailDao {
 				"<td>"+ r.getRegisterEntryDate() +"</td>\r\n" + 
 				"<td>"+ r.getSchedule().getTeacher().getName() +" "+ r.getSchedule().getTeacher().getSurname() +"</td>\r\n" + 
 				"<td>"+r.getSchedule().getSubject().getName() +"</td>\r\n" +
-				"<td>"+r.getMarkValue().ordinal() +"</td>\r\n" +
+				"<td>"+(r.getMarkValue().ordinal()+1) +"</td>\r\n" +
 				"<td>"+r.getMarkDefinition() +"</td>\r\n" +
 				"<td>"+r.getSemester() +"</td>\r\n" + 
 				"</tr>\r\n" + 

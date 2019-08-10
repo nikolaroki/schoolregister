@@ -134,15 +134,15 @@ public class AdminController {
 			acc.setRole(roleRepository.findById(1).orElse(null));
 			acc.setActive(true);
 			if (!userDao.findExistingUsers(admin.getJmbg()).isEmpty()) {
-				if(!userDao.getUsersAdminAccount(userDao.findExistingUsers(admin.getJmbg()).get(0)).isEmpty())
+				if (!userDao.getUsersAdminAccount(userDao.findExistingUsers(admin.getJmbg()).get(0)).isEmpty())
 					return new ResponseEntity<RESTError>(new RESTError(11, "user has allready an admin account"),
 							HttpStatus.BAD_REQUEST);
 				acc.setUser(userDao.findExistingUsers(admin.getJmbg()).get(0));
 				accountRepository.save(acc);
 				adminRepository.inserIntoAdminTable(userDao.findExistingUsers(admin.getJmbg()).get(0).getId(),
 						new Date());
-				return new ResponseEntity<String>("new account added to the existing user with id " + userDao.findExistingUsers(admin.getJmbg()).get(0).getId(),
-						HttpStatus.CREATED);
+				return new ResponseEntity<String>("new account added to the existing user with id "
+						+ userDao.findExistingUsers(admin.getJmbg()).get(0).getId(), HttpStatus.CREATED);
 			}
 			AdminEntity ae = new AdminEntity();
 			ae.setStartDate(new Date());
@@ -160,18 +160,17 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
 	public ResponseEntity<?> updateAdminBasicInfo(@PathVariable Integer id, @RequestBody UserBasicInfoUpdateDTO admin) {
 		try {
 			AdminEntity adm = adminRepository.findById(id).orElse(null);
-			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive())==false) {
+			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive()) == false) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 
-			if (admin.getName() == null && admin.getSurname() == null && admin.getDateOfBirth() == null &&
-					admin.getEmail() == null && admin.getJmbg() == null)
+			if (admin.getName() == null && admin.getSurname() == null && admin.getDateOfBirth() == null
+					&& admin.getEmail() == null && admin.getJmbg() == null)
 				return new ResponseEntity<RESTError>(new RESTError(10, "attributes to be modified not specified"),
 						HttpStatus.BAD_REQUEST);
 			adm = userDao.checkPropToBeChangedAdmin(adm, admin);
@@ -181,12 +180,12 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	public ResponseEntity<?> deleteAdminById(@PathVariable Integer id) {
 		try {
 			AdminEntity adm = adminRepository.findById(id).orElse(null);
-			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive())==false) {
+			if ((adm == null) || (userDao.getActiveAccountForAdmin(adm).get(0).getActive()) == false) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			userDao.getActiveAccountForAdmin(adm).get(0).setActive(false);
@@ -197,32 +196,26 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/updatePassword")
-	public ResponseEntity<?> updatePassword (@RequestBody UpdatePasswordDTO adm){
+	public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO adm) {
 		try {
 			AccountEntity acc = accountRepository.findByUsername(accountDao.getLoggedInUsername());
-			if(acc.getRole().getId() != 1)
+			if (acc.getRole().getId() != 1)
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-			if(!Encryption.comparePassword(adm.getOldPassword(), acc.getPassword()))
-				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"),
-						HttpStatus.BAD_REQUEST);
-			if(!adm.getNewPassword().equals(adm.getNewPasswordConf()))
+			if (!Encryption.comparePassword(adm.getOldPassword(), acc.getPassword()))
+				return new ResponseEntity<RESTError>(new RESTError(98, "wrong password"), HttpStatus.BAD_REQUEST);
+			if (!adm.getNewPassword().equals(adm.getNewPasswordConf()))
 				return new ResponseEntity<RESTError>(new RESTError(99, "new password not matching"),
 						HttpStatus.BAD_REQUEST);
 			acc.setPassword(Encryption.getPassEncoded(adm.getNewPassword()));
 			accountRepository.save(acc);
-			return new ResponseEntity<AdminEntity>(adminRepository.findById(acc.getUser().getId()).orElse(null), HttpStatus.OK);
+			return new ResponseEntity<AdminEntity>(adminRepository.findById(acc.getUser().getId()).orElse(null),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-				
 
 	}
-	
-	
-	
-	
 
 }
