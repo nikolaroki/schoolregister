@@ -3,6 +3,8 @@ package com.iktpreobuka.schoolregister.controllers;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.schoolregister.entities.AccountEntity;
 import com.iktpreobuka.schoolregister.entities.AddressEntity;
 import com.iktpreobuka.schoolregister.entities.GroupEntity;
@@ -31,6 +34,7 @@ import com.iktpreobuka.schoolregister.repositories.GroupRepository;
 import com.iktpreobuka.schoolregister.repositories.ParentRepository;
 import com.iktpreobuka.schoolregister.repositories.RoleRepository;
 import com.iktpreobuka.schoolregister.repositories.StudentRepository;
+import com.iktpreobuka.schoolregister.security.Views;
 import com.iktpreobuka.schoolregister.services.AccountDao;
 import com.iktpreobuka.schoolregister.services.AddressDao;
 import com.iktpreobuka.schoolregister.services.FileHandler;
@@ -74,11 +78,15 @@ public class StudentController {
 
 	@Autowired
 	private GroupRepository groupRepository;
-
+	
+	private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getAllActive() {
 		try {
 			Iterable<StudentEntity> students = studentRepository.findAllActive();
+			logger.info("Active studenst found");
+
 			return new ResponseEntity<Iterable<StudentEntity>>(students, HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -91,6 +99,7 @@ public class StudentController {
 	public ResponseEntity<?> getAll() {
 		try {
 			Iterable<StudentEntity> students = studentRepository.findAll();
+			logger.info("Active and inactive studenst found");
 			return new ResponseEntity<Iterable<StudentEntity>>(students, HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -104,8 +113,11 @@ public class StudentController {
 		try {
 			StudentEntity student = studentRepository.findById(id).orElse(null);
 
-			if (student == null || userDao.getActiveAccountForStudent(student).isEmpty())
+			if (student == null || userDao.getActiveAccountForStudent(student).isEmpty()) {
+				logger.error("Student not found");
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			logger.info("All good - returning student");
 			return new ResponseEntity<StudentEntity>(student, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -118,75 +130,95 @@ public class StudentController {
 		try {
 
 			if (student.getPassword() == null || student.getPassword() == " " || student.getPassword() == "") {
+				logger.error("password not specified");
 				return new ResponseEntity<RESTError>(new RESTError(2, "password not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 			if (student.getUsername() == null || student.getUsername() == " " || student.getUsername() == "") {
+				logger.error("username not specified");
 				return new ResponseEntity<RESTError>(new RESTError(3, "username not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getName() == null || student.getName() == " " || student.getName() == "") {
+				logger.error("name not specified");
 				return new ResponseEntity<RESTError>(new RESTError(4, "first name not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getSurname() == null || student.getSurname() == " " || student.getSurname() == "") {
+				logger.error("last name not specified");
 				return new ResponseEntity<RESTError>(new RESTError(5, "last name not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getEmail() == null || student.getEmail() == " " || student.getEmail() == "") {
+				logger.error("email not specified");
 				return new ResponseEntity<RESTError>(new RESTError(6, "email not specified"), HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getDateOfBirth() == null) {
+				logger.error("Birth date not specified");
 				return new ResponseEntity<RESTError>(new RESTError(7, "please specify date of birth"),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getJmbg() == null || student.getJmbg() == " " || student.getJmbg() == "") {
+				logger.error("Jmbg not specified");
 				return new ResponseEntity<RESTError>(new RESTError(9, "JMBG not specified"), HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getStreetNumber() == null || student.getStreetNumber() == " "
 					|| student.getStreetNumber() == "") {
+				logger.error("street number not specified");
 				return new ResponseEntity<RESTError>(new RESTError(11, "street number not specified"),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getStreet() == null || student.getStreet() == " " || student.getStreet() == "") {
+				logger.error("street not specified");
 				return new ResponseEntity<RESTError>(new RESTError(12, "street not specified"), HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getCity() == null || student.getCity() == " " || student.getCity() == "") {
+				logger.error("city not specified");
 				return new ResponseEntity<RESTError>(new RESTError(13, "city not specified"), HttpStatus.BAD_REQUEST);
 			}
 
 			if (student.getGender() == null) {
+				logger.error("gener not specified :DDDD ");
 				return new ResponseEntity<RESTError>(new RESTError(8, "gender not specified"), HttpStatus.BAD_REQUEST);
 			}
-
-			if (accountDao.doesAccountExists(student.getUsername()))
+			logger.info("checking if account exists");
+			if (accountDao.doesAccountExists(student.getUsername())) {
+				logger.error("account already exists");
 				return new ResponseEntity<RESTError>(new RESTError(1, "account already exists"),
-						HttpStatus.BAD_REQUEST);
+						HttpStatus.BAD_REQUEST);}
 
 			AccountEntity acc = new AccountEntity();
+			logger.info("account created = blank");
 			acc.setPassword(Encryption.getPassEncoded(student.getPassword()));
 			acc.setUsername(student.getUsername());
 			acc.setRole(roleRepository.findById(3).orElse(null));
 			acc.setActive(true);
-
+			logger.info("account created");
+			
 			AddressEntity adr = new AddressEntity();
 			adr.setCity(student.getCity());
 			adr.setStreet(student.getStreet());
 			adr.setStreetNumber(student.getStreetNumber());
 			adr.setActive(true);
+			logger.info("temp address created");
 
-			if (!addressDao.findIfExists(adr).isEmpty())
+			if (!addressDao.findIfExists(adr).isEmpty()) {
 				adr = addressDao.findIfExists(adr).get(0);
-			if (!adr.getActive())
+				logger.info("found existing address");
+				}
+			if (!adr.getActive()) {
 				adr.setActive(true);
+				logger.info("if existing address inactive - activates it");
+			}
+			
 
 			if (!userDao.findExistingUsers(student.getJmbg()).isEmpty()) {
 				if (!userDao.getUsersStudentAccount(userDao.findExistingUsers(student.getJmbg()).get(0)).isEmpty())
@@ -281,6 +313,8 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/uploadImage/{id}")
+	@Secured({"ROLE_ADMIN","ROLE_TEACHER","ROLE_STUDENT"})
+	@JsonView(Views.Private.class)
 	public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") Integer id) {
 
 		try {
@@ -304,6 +338,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/addParent/{parentId}/toChild/{childId}")
+	@Secured({"ROLE_ADMIN","ROLE_TEACHER"})
 	public ResponseEntity<?> addFamilyRelationship(@PathVariable("parentId") Integer parentId,
 			@PathVariable("childId") Integer childId) {
 		try {

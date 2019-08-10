@@ -63,6 +63,7 @@ public class ParentController {
 	private ChildParentRepository childParentRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> getAllActive() {
 		try {
 			Iterable<ParentEntity> parents = parentRepository.findAllActive();
@@ -75,6 +76,7 @@ public class ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/all")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> getAll() {
 		try {
 			Iterable<ParentEntity> parents = parentRepository.findAll();
@@ -87,6 +89,7 @@ public class ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	
 	public ResponseEntity<?> findParentById(@PathVariable Integer id) {
 		try {
 			ParentEntity parent = parentRepository.findById(id).orElse(null);
@@ -100,6 +103,7 @@ public class ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> addNewAdmin(@RequestBody ParentDTO parent) {
 
 		try {
@@ -212,6 +216,7 @@ public class ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	
 	public ResponseEntity<?> updateParentBasicInfo(@PathVariable Integer id, @RequestBody ParentUpdateDTO parent) {
 		try {
 			ParentEntity prt = parentRepository.findById(id).orElse(null);

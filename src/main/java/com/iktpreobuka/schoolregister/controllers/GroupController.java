@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import com.iktpreobuka.schoolregister.services.UserDao;
 import com.iktpreobuka.schoolregister.util.RESTError;
 
 @RestController
+@Secured("ROLE_ADMIN")
 @RequestMapping(path = "/eregister/group")
 public class GroupController {
 

@@ -14,6 +14,8 @@ import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.iktpreobuka.schoolregister.security.Views;
 
 @Entity
 @Table(name = "account")
@@ -33,6 +35,7 @@ public class AccountEntity {
 	
 	@Column(name = "username")
 	//@Size(min=2, max=20, message = "username must be between {min} and {max} characters long.")
+	@JsonView(Views.Public.class)
 	private String username;
 	
 	@Column(name = "password")
@@ -44,7 +47,8 @@ public class AccountEntity {
 	private RoleEntity role;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user")	
+	@JoinColumn(name = "user")
+	@JsonView(Views.Public.class)
 	private UserEntity user;
 
 	public Integer getId() {

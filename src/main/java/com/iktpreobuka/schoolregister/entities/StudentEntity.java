@@ -13,7 +13,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.iktpreobuka.schoolregister.enumeration.EUserGender;
+import com.iktpreobuka.schoolregister.security.Views;
 
 @Entity
 @Table(name = "student")
@@ -28,6 +30,7 @@ public class StudentEntity extends UserEntity{
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "schoolGroup")
+	@JsonView(Views.Public.class)
 	private GroupEntity schoolGroup;
 	
 	@JsonIgnore

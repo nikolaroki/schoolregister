@@ -41,6 +41,8 @@ public class RegisterEntity {
 	
 	private EMarkDefinition markDefinition;
 	
+	private Boolean activ;
+	
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacherSubjectGroup")
@@ -106,15 +108,29 @@ public class RegisterEntity {
 		this.student = student;
 	}
 
+
+
+	public Boolean getActiv() {
+		return activ;
+	}
+
+	public void setActiv(Boolean activ) {
+		this.activ = activ;
+	}
+	
+	
+
 	public RegisterEntity(Integer id, Date registerEntryDate, ESemester semester, EMarkValue markValue,
-			EMarkDefinition markDefinition, TeacherSubjectGroup schedule, StudentEntity student) {
+			EMarkDefinition markDefinition, Boolean activ, TeacherSubjectGroup teacherSubjectGroup,
+			StudentEntity student) {
 		super();
 		this.id = id;
 		this.registerEntryDate = registerEntryDate;
 		this.semester = semester;
 		this.markValue = markValue;
 		this.markDefinition = markDefinition;
-		this.teacherSubjectGroup = schedule;
+		this.activ = activ;
+		this.teacherSubjectGroup = teacherSubjectGroup;
 		this.student = student;
 	}
 

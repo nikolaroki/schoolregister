@@ -25,6 +25,7 @@ public class GradeSubject {
 	@Column(name = "grade_subject_id")
 	private Integer id;
 	
+	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "subjects")
 	private SubjectEntity subject;
@@ -56,6 +57,10 @@ public class GradeSubject {
 	public void setGrade(GradeEntity grade) {
 		this.grade = grade;
 	}
+	
+	
+
+
 
 	public GradeSubject() {
 		super();

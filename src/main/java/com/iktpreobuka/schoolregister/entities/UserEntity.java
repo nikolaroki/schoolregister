@@ -20,6 +20,8 @@ import javax.persistence.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.iktpreobuka.schoolregister.security.Views;
 
 @Entity
 @Table(name = "user",uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "jmbg" }) })
@@ -30,28 +32,34 @@ public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
+	@JsonView(Views.Admin.class)
 	private Integer id;
 	
 	@Version
+	@JsonView(Views.Admin.class)
 	private Integer version;
 	
 	@Column(name = "name")
 	//@NotNull(message = "first name not specified")
+	@JsonView(Views.Public.class)
 	private String name;
 	@Column(name = "surname")
+	@JsonView(Views.Public.class)
 	//@NotNull(message = "last name not specified")
 	private String surname;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "dob")
+	@JsonView(Views.Private.class)
 	private Date dateOfBirth;
 	//@NotNull(message = "email not specified")
 	//@Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$",
 	//message="email format not valid.")
 	@Column(name = "email")
+	@JsonView(Views.Private.class)
 	private String email;
 	//@Size(min=13, max=14, message = "JMBF has 13 numbers.")
+	@JsonView(Views.Private.class)
 	@Column(name = "jmbg")
-	
 	private String jmbg;
 	
 	@JsonIgnore

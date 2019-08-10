@@ -19,6 +19,8 @@ import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.iktpreobuka.schoolregister.security.Views;
 
 @Entity
 @Table(name = "school_group")
@@ -34,7 +36,9 @@ public class GroupEntity {
 	@Version
 	private Integer version;
 	
+	@JsonView(Views.Public.class)
 	private Year generationYear;
+	
 	
 	private Boolean active;
 	
@@ -47,10 +51,12 @@ public class GroupEntity {
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "grade")
+	@JsonView(Views.Public.class)
 	private GradeEntity groupGrade;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "school")
+	@JsonView(Views.Public.class)
 	private SchoolEntity groupSchool;
 
 	@OneToOne(cascade = CascadeType.ALL)

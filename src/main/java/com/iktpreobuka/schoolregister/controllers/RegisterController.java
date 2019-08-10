@@ -84,6 +84,7 @@ public class RegisterController {
 		return new ResponseEntity<List<RegisterEntity>>((List<RegisterEntity>) registerRepository.findAll(),
 				HttpStatus.OK);
 	}
+	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/student/{studentId}/subject/{subjectId}")
 	@Secured("ROLE_TEACHER")
@@ -136,6 +137,7 @@ public class RegisterController {
 			reg.setRegisterEntryDate(new Date());
 			reg.setSemester(mark.getSemester());
 			reg.setStudent(student);
+			reg.setActiv(true);
 			registerRepository.save(reg);
 			logger.info("register created");
 			List<ParentEntity> parents = childParentRepository.findParentsByChild(student);
@@ -159,7 +161,7 @@ public class RegisterController {
 	public ResponseEntity<?> findByID(@PathVariable Integer id) {
 		try {
 			RegisterEntity reg = registerRepository.findById(id).orElse(null);
-			if (reg == null)
+			if (reg == null || !reg.getActiv())
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			return new ResponseEntity<RegisterEntity>(reg, HttpStatus.OK);
 		} catch (Exception e) {
@@ -210,6 +212,21 @@ public class RegisterController {
 			if (reg == null)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			return new ResponseEntity<List<RegisterEntity>>(reg, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@Secured("ROLE_ADMIN")
+	public ResponseEntity<?> delMark(@PathVariable Integer id) {
+		try {
+			RegisterEntity reg = registerRepository.findById(id).orElse(null);
+			if (reg == null || !reg.getActiv())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			reg.setActiv(false);
+			registerRepository.save(reg);
+			return new ResponseEntity<RegisterEntity>(reg, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
