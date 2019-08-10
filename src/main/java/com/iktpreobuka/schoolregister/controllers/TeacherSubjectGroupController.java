@@ -15,12 +15,10 @@ import com.iktpreobuka.schoolregister.entities.GroupEntity;
 import com.iktpreobuka.schoolregister.entities.SubjectEntity;
 import com.iktpreobuka.schoolregister.entities.TeacherEntity;
 import com.iktpreobuka.schoolregister.entities.TeacherSubjectGroup;
-import com.iktpreobuka.schoolregister.repositories.AccountRepository;
 import com.iktpreobuka.schoolregister.repositories.GroupRepository;
 import com.iktpreobuka.schoolregister.repositories.SubjectRepository;
 import com.iktpreobuka.schoolregister.repositories.TeacherRepository;
 import com.iktpreobuka.schoolregister.repositories.TeacherSubjectGroupRepository;
-import com.iktpreobuka.schoolregister.services.AccountDao;
 import com.iktpreobuka.schoolregister.services.ScheduleDao;
 import com.iktpreobuka.schoolregister.services.UserDao;
 import com.iktpreobuka.schoolregister.util.RESTError;
@@ -29,11 +27,11 @@ import com.iktpreobuka.schoolregister.util.RESTError;
 @RequestMapping(path = "/eregister/schedule")
 public class TeacherSubjectGroupController {
 
-	@Autowired
+/*	@Autowired
 	private AccountDao accountDao;
 
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountRepository accountRepository;*/
 
 	@Autowired
 	private UserDao userDao;
@@ -54,7 +52,7 @@ public class TeacherSubjectGroupController {
 	private ScheduleDao scheduleDao;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/teacher/{teacherId}/subject/{subjectId}/group/{groupId}")
-	@Secured("ROLE_TEACHER")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> addSchedule(@PathVariable("teacherId") Integer teacherId,@PathVariable("subjectId") Integer subjectId,
 			@PathVariable("groupId") Integer groupId) {
 

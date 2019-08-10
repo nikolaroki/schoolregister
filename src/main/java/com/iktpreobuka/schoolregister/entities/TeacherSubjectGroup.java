@@ -13,15 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
+
 @Entity
-@Table(name = "schedule",
+@Table(name = "schedule"/*,
 uniqueConstraints = { @UniqueConstraint(
-		columnNames = { "teacher", "subject","schoolGroup" }) })
+		columnNames = { "teacher", "subject","schoolGroup" }) }*/)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeacherSubjectGroup {
 	
@@ -46,7 +47,7 @@ public class TeacherSubjectGroup {
 	
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY,
+	@OneToMany(mappedBy = "teacherSubjectGroup", fetch = FetchType.LAZY,
 	cascade = { CascadeType.REFRESH })
 	private List<RegisterEntity> registers;
 

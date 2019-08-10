@@ -9,7 +9,9 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Service;
 
 import com.iktpreobuka.schoolregister.entities.GroupEntity;
+import com.iktpreobuka.schoolregister.entities.StudentEntity;
 import com.iktpreobuka.schoolregister.entities.SubjectEntity;
+import com.iktpreobuka.schoolregister.entities.TeacherEntity;
 import com.iktpreobuka.schoolregister.entities.TeacherSubjectGroup;
 
 @Service
@@ -28,5 +30,17 @@ public class ScheduleDaoImp implements ScheduleDao {
 
 		return query.getResultList();
 
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TeacherSubjectGroup> findSheduleForStudentAndSubject(TeacherEntity teacher, StudentEntity student,
+			SubjectEntity subject) {
+			String sql = "SELECT tsg FROM TeacherSubjectGroup tsg where tsg.schoolGroup = " + student.getSchoolGroup().getId() + 
+					" and tsg.subject = " + subject.getId() + " and tsg.teacher = "+ teacher.getId() + " and tsg.active = true";
+
+			Query query = em.createQuery(sql);
+
+			return query.getResultList();
+		
 	}
 }

@@ -20,6 +20,8 @@ import com.iktpreobuka.schoolregister.enumeration.ESemester;
 
 
 
+
+
 @Entity
 @Table(name = "register")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -37,9 +39,10 @@ public class RegisterEntity {
 	
 	private EMarkDefinition markDefinition;
 	
+	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "schedule")
-	private TeacherSubjectGroup schedule;
+	@JoinColumn(name = "teacherSubjectGroup")
+	private TeacherSubjectGroup teacherSubjectGroup;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "student")
@@ -86,11 +89,11 @@ public class RegisterEntity {
 	}
 
 	public TeacherSubjectGroup getSchedule() {
-		return schedule;
+		return teacherSubjectGroup;
 	}
 
 	public void setSchedule(TeacherSubjectGroup schedule) {
-		this.schedule = schedule;
+		this.teacherSubjectGroup = schedule;
 	}
 
 	public StudentEntity getStudent() {
@@ -109,7 +112,7 @@ public class RegisterEntity {
 		this.semester = semester;
 		this.markValue = markValue;
 		this.markDefinition = markDefinition;
-		this.schedule = schedule;
+		this.teacherSubjectGroup = schedule;
 		this.student = student;
 	}
 
